@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+reload_dunst() {
+  if [[ `command -v dunst >/dev/null 2>&1` ]]; then
+    "$XDG_CONFIG_HOME/wal/dunst"
+    if [[ $? == 0 ]]; then
+      pkill dunst && dunst -config "$XDG_CONFIG_HOME/dunst/dunstrc" &
+      notify-send "wal-set" "dunst reloaded"
+    fi
+  else
+    echo "[#] dunst not installed, skipping"
+  fi
+}
+
+generate_lock_screen(){
+  "$XDG_CONFIG_HOME/wal/lock"
+  if [[ $? == 0 ]]; then
+    notify-send "wal-set" "lock screen generated"
+  fi
+}
+
+#if mode == arc
+rebuild_st(){
+  ("$XDG_CONFIG_HOME/wal/st") &
+  wait $!
+  if [[ $? == 0 ]]; then
+    notify-send "wal-set" "rebuilt st"
+  else
+    notify-send -u critical "wal-set" "didn't rebuilt st"
+  fi
+}
+#endif
+
+main() {
+  sleep 2
+  echo "[#] applying new colorscheme"
+  reload_dunst
+  generate_lock_screen
+#if mode == arc
+  rebuild_st
+#endif
+}
+
+main && exit 0
+# lightdm-gtk-greeter
+# cp path/to/image /usr/share/pixmaps
+# nvim /etc/lightdm/lightdm-gtk-greeter.conf

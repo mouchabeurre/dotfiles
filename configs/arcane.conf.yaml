@@ -1,0 +1,51 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- shell:
+  -
+    command: ./scripts/preprocess arc
+    stdout: true
+    stderr: true
+    description: Pre-process files for "arcane" configuration
+
+- link:
+    ~/.config/dunst/dunstrc: .generated/.config/dunst/dunstrc
+    ~/.config/fdfind/globalignore: .generated/.config/fdfind/globalignore
+    ~/.config/i3/config: .generated/.config/i3/config
+    ~/.config/i3/scripts/bar: .generated/.config/i3/scripts/bar
+    ~/.config/i3/scripts/kill: .bin/i3-window-killer/target/release/i3-window-killer
+    ~/.config/i3/scripts/lock: .generated/.config/i3/scripts/lock
+    ~/.config/i3/scripts/power: .generated/.config/i3/scripts/power
+    ~/.config/i3/scripts/scratch_term: .generated/.config/i3/scripts/scratch_term
+    ~/.config/mpv/mpv.conf: .generated/.config/mpv/mpv.conf
+    ~/.config/nvim/init.vim: .generated/.config/nvim/init.vim
+    ~/.config/oh-my-zsh/custom/themes/bureau.zsh-theme: .generated/.config/oh-my-zsh/custom/themes/bureau.zsh-theme
+    ~/.config/picom/picom.conf: .generated/.config/picom/picom.conf
+    ~/.config/polybar/config: .generated/.config/polybar/config
+    ~/.config/polybar/top: .generated/.config/polybar/top
+    ~/.config/polybar/bot: .generated/.config/polybar/bot
+    ~/.config/polybar/scripts/bluetooth: .generated/.config/polybar/scripts/bluetooth
+    ~/.config/polybar/scripts/uptime: .generated/.config/polybar/scripts/uptime
+    ~/.config/polybar/scripts/vpn: .generated/.config/polybar/scripts/vpn
+    ~/.config/ranger/rc.conf: .generated/.config/ranger/rc.conf
+    ~/.config/rofi/config: .generated/.config/rofi/config
+    ~/.config/wal/dunst: .generated/.config/wal/dunst
+    ~/.config/wal/lock: .generated/.config/wal/lock
+    ~/.config/wal/st: .generated/.config/wal/st
+    ~/.config/wal/templates/colors-rofi.rasi: .generated/.config/wal/templates/colors-rofi.rasi
+    ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
+    ~/.config/wal/wal-set: .generated/.config/wal/wal-set
+    ~/.gitconfig: .generated/.gitconfig
+    ~/.scripts/mympv: .generated/.scripts/mympv
+    ~/.scripts/mypass: .generated/.scripts/mypass
+    ~/.scripts/myplug: .generated/.scripts/myplug
+    ~/.scripts/myvpn: .generated/.scripts/myvpn
+    ~/.xprofile: .generated/.xprofile
+    ~/.zshenv: .generated/.zshenv
+    ~/.zshrc: .generated/.zshrc
+
+- clean:
+    ~/.config:
+      recursive: true

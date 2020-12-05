@@ -1,0 +1,277 @@
+###############################
+#      CONFIGURATION I3       #
+###############################
+
+set $mod Mod4
+
+###############################
+#          APPARENCE          #
+###############################
+
+# Font for window titles
+font pango: Hack 0
+
+# Load cached wal
+exec_always --no-startup-id wal -R
+
+# Load Xressources
+exec --no-startup-id xrdb ~/.Xressources
+
+# Colors
+set_from_resource $active-border i3wm.color7 #F0F0F0
+set_from_resource $bg            i3wm.color2 #F0F0F0
+set_from_resource $indicator     i3wm.color4 #00FF00
+
+set $bg-color            #2f343f
+set $inactive-bg-color   #2f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676E7D
+set $urgent-bg-color     #E53935
+
+# Window colors
+# class                   border             background         text                 indicator
+client.focused            $active-border     $bg                $text-color          $indicator
+client.unfocused          $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator
+client.focused_inactive   $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator
+client.urgent             $urgent-bg-color   $urgent-bg-color   $text-color          $indicator
+
+# Hide window side borders
+hide_edge_borders both
+
+# Disable mouse focus
+focus_follows_mouse no
+
+# i3-gaps options
+for_window [class="^.*"] border pixel 2
+# for_window [class=".*"] title_format "  %title"
+gaps inner 2
+gaps outer 20
+smart_borders on
+smart_gaps on
+
+###############################
+#         KEYBINDING          #
+###############################
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Start a terminal
+#if mode == arc
+bindsym $mod+Return exec --no-startup-id st
+#elif mode == dec
+bindsym $mod+Return exec --no-startup-id alacritty
+#endif
+
+# Toggle scratchpad terminal
+bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/scratch_term; [class="__scratch"] scratchpad show
+
+# Kill focused window
+bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/scripts/kill
+
+# Clipboard manager
+bindsym $mod+m exec --no-startup-id clipmenu
+
+# Clear saved clips
+bindsym $mod+Shift+m exec --no-startup-id clipdel -d ".*"
+
+# Start rofi
+bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun
+
+# Change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split in horizontal orientation
+bindsym $mod+b split h
+
+# Split in vertical orientation
+bindsym $mod+v split v
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+z layout tabbed
+bindsym $mod+e layout toggle split
+
+# Foggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# Focus the parent container
+bindsym $mod+Shift+p focus parent
+
+# Focus the child container
+#bindsym $mod+d focus child
+
+# Resize window (you can also use the mouse for that)
+set $step1 1 px or 1 ppt
+set $step10 10 px or 10 ppt
+mode "resize" {
+# step10 steps
+        bindsym h resize shrink width $step10
+        bindsym j resize shrink height $step10
+        bindsym k resize grow height $step10
+        bindsym l resize grow width $step10
+
+# step1 steps
+        bindsym Shift+h resize shrink width $step1
+        bindsym Shift+j resize shrink height $step1
+        bindsym Shift+k resize grow height $step1
+        bindsym Shift+l resize grow width $step1
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+# Restart i3 inplace
+bindsym $mod+Shift+r restart
+# Exit i3
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/i3/scripts/power
+
+# Lock screen
+bindsym $mod+Control+q exec --no-startup-id ~/.config/i3/scripts/lock
+
+# Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 2%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 2%-
+bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id amixer set Master 18%
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id amixer set Master 100%
+
+#if mode == arc
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym Shift+XF86MonBrightnessUp exec --no-startup-id xbacklight -set 100
+bindsym Shift+XF86MonBrightnessDown exec --no-startup-id xbacklight -set 5
+#endif
+
+###############################
+#        WORKSPACES           #
+###############################
+
+# Workspaces
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+
+# Switch to workspace
+bindsym $mod+ampersand workspace $ws1
+bindsym $mod+eacute workspace $ws2
+bindsym $mod+quotedbl workspace $ws3
+bindsym $mod+apostrophe workspace $ws4
+bindsym $mod+parenleft workspace $ws5
+bindsym $mod+minus workspace $ws6
+bindsym $mod+egrave workspace $ws7
+bindsym $mod+underscore workspace $ws8
+bindsym $mod+ccedilla workspace $ws9
+bindsym $mod+agrave workspace $ws10
+
+bindsym $mod+Tab workspace prev
+
+# Move focused container to workspace
+bindsym $mod+Shift+ampersand move container to workspace $ws1
+bindsym $mod+Shift+eacute move container to workspace $ws2
+bindsym $mod+Shift+quotedbl move container to workspace $ws3
+bindsym $mod+Shift+apostrophe move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+minus move container to workspace $ws6
+bindsym $mod+Shift+egrave move container to workspace $ws7
+bindsym $mod+Shift+underscore move container to workspace $ws8
+bindsym $mod+Shift+ccedilla move container to workspace 9
+bindsym $mod+Shift+agrave move container to workspace 10
+
+# workspace specific default rules
+workspace $ws1 gaps inner 0
+workspace $ws1 gaps outer 0
+
+# Gaps setter
+set $mode_gaps_outer Outer Gaps
+set $mode_gaps_inner Inner Gaps
+bindsym $mod+Shift+o mode "$mode_gaps_outer"
+bindsym $mod+Shift+i mode "$mode_gaps_inner"
+
+mode "$mode_gaps_inner" {
+        bindsym l gaps inner current plus 5
+        bindsym h gaps inner current minus 5
+        bindsym 0 gaps inner current set 0
+
+        bindsym Shift+l gaps inner all plus 5
+        bindsym Shift+h gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym l gaps outer current plus 5
+        bindsym h gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+l gaps outer all plus 5
+        bindsym Shift+h gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+# Force apps into workspaces
+# Workspace 1
+assign [class="Firefox"] $ws1
+for_window[class="Firefox"] focus
+
+# Specific class rules
+for_window [class="__floating"] floating enable
+
+# Bar
+exec_always --no-startup-id ~/.config/i3/scripts/bar
+
+###############################
+#            MISC             #
+###############################
+
+# Keyboard repeat rate and delay
+exec --no-startup-id xset r rate 200 30
+
+# Start additional programs
+# Compton
+exec --no-startup-id picom
+# Drop-down terminal
+exec --no-startup-id sleep 1; ~/.config/i3/scripts/scratch_term
+for_window [class="__scratch"] floating toggle move scratchpad
+# Notification demon
+exec --no-startup-id dunst -config ~/.config/dunst/dunstrc

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+VIDEO=$1
+if [[ -z "$VIDEO" ]]; then
+  read -p "[?] Video path: " VIDEO
+fi
+read -p "[?] Add subtitles [Y/n]: " SUB
+SUB=${SUB:-Y}
+if [[ "$SUB" = "Y" ]] || [[ "$SUB" = "y" ]]; then
+  SUBLIST=""
+  DOWNLOADDIR="$(xdg-user-dir DOWNLOAD)"
+  if [[ "$DOWNLOADDIR" != "$HOME" ]]; then
+    echo "[-] Couldn't find subtitles location, skipping selection"
+  else
+    while true; do
+      FILE="$(fdfind -t f -a -E "*orig*" -e srt -e idx -e sub . "$DOWNLOADDIR/subtitles" \
+        | fzf --prompt="Subtitle: ")"
+      if [[ -n "$FILE" ]]; then
+        if [[ -n "$SUBLIST" ]]; then
+          SUBLIST="$SUBLIST:$FILE"
+        else
+          SUBLIST="$FILE"
+        fi
+        echo "[+] Added \"$(basename "$FILE")\""
+      else
+        echo "[-] Subtitle selection aborted, continuing"
+        break
+      fi
+      read -p "[?] Add more subtitles [y/N]: " SUB
+      SUB=${SUB:-N}
+    done
+  fi
+fi
+echo "[#] Playing \"$(basename "$VIDEO")\""
+if [[ -n "$SUBLIST" ]]; then
+  mpv "$VIDEO" --sub-files="$SUBLIST"
+else
+  mpv "$VIDEO"
+fi

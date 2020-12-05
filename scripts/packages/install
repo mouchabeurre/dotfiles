@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+PACKAGES_FILE="package.list"
+
+die() {
+  echo "[-] Error: ${1}." >&2
+  exit 1
+}
+log() {
+  echo "[+] ${1}."
+}
+
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${BASEDIR}" || die "cd ${BASEDIR}"
+read -p "[?] Install packages ? [y/N]: " INSTALL
+INSTALL="${INSTALL:-'N'}"
+[[ "${INSTALL}" != 'y' ]] && log "Skipping packages installation" && exit 0
+[[ -f "${PACKAGES_FILE}" ]] || die "couldn't find package list \"${PACKAGES_FILE}\""
+log "Package list contains $(wc -l $PACKAGES_FILE | awk '{print $1}') packages"
+trizen -Syu "${PACKAGES_FILE}"
+log "Done installing packages"

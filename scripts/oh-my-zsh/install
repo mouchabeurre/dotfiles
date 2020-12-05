@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+die() {
+  echo "[-] Error: ${1}." >&2
+  exit 1
+}
+log() {
+  echo "[+] ${1}."
+}
+
+read -p "[?] Install oh-my-zsh ? [y/N]: " INSTALL
+INSTALL="${INSTALL:-'N'}"
+[[ "${INSTALL}" != 'y' ]] && log "Skipping oh-my-zsh installation" && exit 0
+INSTALL_DIR="${HOME}/.config/oh-my-zsh"
+[[ -d "${INSTALL_DIR}/.git" ]] && log "oh-my-zsh already installed" && exit 0
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${BASEDIR}" || die "cd ${BASEDIR}"
+ZSH="${INSTALL_DIR}" ./_install --unattended --keep-zshrc || die "couldn't install oh-my-zsh"
+log "oh-my-zsh successfully installed"

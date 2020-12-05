@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+die() {
+  echo "Error: $1." >&2
+  exit 1
+}
+log() {
+  echo "[+] ${1}."
+}
+
+command -v gpp 2>&1 > /dev/null || die "gpp not installed"
+
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${BASEDIR}/../" || die "cd ${BASEDIR}"
+
+CONFIG="${1}"
+./scripts/getconfigname ${CONFIG} || die "config \"${CONFIG}\" not supported"
+
+DOTFILES_DIR="dotfiles"
+PROCESSED_DIR=".generated"
+while read -r FILE
+do
+  PARENT="$(dirname ${FILE})"
+  DEST="${PROCESSED_DIR}${PARENT#"${DOTFILES_DIR}"}/$(basename ${FILE})"
+  mkdir -p "${PROCESSED_DIR}${PARENT#"${DOTFILES_DIR}"}"
+  gpp \
+    -n -U "" "" "(" "," ")" "(" ")" "#" "" \
+    -M "#" "\n" " " " " "\n" "(" ")" \
+    -Dmode="${CONFIG}" "${FILE}" > "${DEST}"
+  chmod u+x "${DEST}"
+done < <(fd -Hpt f . "${DOTFILES_DIR}")
+echo "[+] Done pre-processing dotfiles for \"${CONFIG}\""

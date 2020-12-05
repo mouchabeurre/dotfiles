@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#if mode == arc
+options="Suspend\nExit\nShut down\nReboot"
+#elif mode == dec
+options="Suspend\nExit\nShut down\nReboot\nHibernate"
+#endif
+res="$(printf "$options" \
+  | rofi \
+    -dmenu \
+    -i \
+    -p "Power" \
+    -theme-str 'mainbox { padding: 430px 800px; }')"
+clear_clips() {
+  clipdel -d ".*"
+}
+case "$res" in
+  "Suspend")
+    $XDG_CONFIG_HOME/i3/scripts/lock && clear_clips && systemctl suspend
+    ;;
+  "Exit")
+    clear_clips && i3-msg exit
+    ;;
+  "Shut down")
+    clear_clips && systemctl poweroff
+    ;;
+  "Reboot")
+    clear_clips && systemctl reboot
+    ;;
+#if mode == dec
+  "Hibernate")
+    ~/.config/i3/scripts/lock && clear_clips && systemctl hibernate
+    ;;
+#endif
+  *)
+    exit 0
+    ;;
+esac

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+die() {
+  echo "[-] Error: ${1}." >&2
+  exit 1
+}
+log() {
+  echo "[+] ${1}."
+}
+
+PROGRAM_NAME="i3-window-killer"
+PROGRAM_DIR="../../.bin/${PROGRAM_NAME}"
+BIN="target/release/${PROGRAM_NAME}"
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${BASEDIR}" || die "cd ${BASEDIR}"
+[[ -d "${PROGRAM_DIR}" ]] || "cannot find submodule at \"${PROGRAM_DIR}\""
+git submodule update --init "${PROGRAM_DIR}"
+read -p "[?] Update submodule ${PROGRAM_NAME} ? [y/N]: " UPDATE
+UPDATE="${UPDATE:-'N'}"
+[[ "${UPDATE}" == 'y' ]] && git submodule update --remote "${PROGRAM_DIR}"
+if [[ ! -e "${PROGRAM_DIR}/${BIN}" ]] || [[ "${UPDATE}" == 'y' ]]; then
+  log "${PROGRAM_NAME} needs to be built"
+  command -v cargo 2>&1 > /dev/null || die "cargo not installed"
+  {
+    local START="$(pwd)"
+    cd "${PROGRAM_DIR}" || die "cd ${PROGRAM_DIR}"
+    cargo b --release
+    cd "${START}" || die "cd ${START}"
+  }
+  log "${PROGRAM_NAME} successfully built"
+fi

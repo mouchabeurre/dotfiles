@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+die() {
+  echo "[-] Error: ${1}." >&2
+  exit 1
+}
+log() {
+  echo "[+] ${1}."
+}
+
+read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " INSTALL
+INSTALL="${INSTALL:-'N'}"
+[[ "${INSTALL}" != 'y' ]] && log "Skipping interfaces generation" && exit 0
+WIREGUARD_CONFIGS_DIR="/etc/wireguard"
+[[ ! -z "$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)" ]] && log "wireguard interfaces already generated" && exit 0
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "${BASEDIR}" || die "cd ${BASEDIR}"
+./_install || die "couldn't generate configurations"
+log "wireguard interfaces successfully generated"

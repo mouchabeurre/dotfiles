@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+new_bg=$(sed '1q;d' "$XDG_CACHE_HOME/wal/wal")
+res=$(xdpyinfo | grep "dimensions" | awk '{ print $2 }')
+
+mkdir -p "$XDG_CACHE_HOME/i3lock"
+cp "$new_bg" "$XDG_CACHE_HOME/i3lock/background.jpg"
+background="$XDG_CACHE_HOME/i3lock/background.jpg"
+
+convert "$background" -resize "$res""^" -gravity center -extent "$res" "$background"
+convert "$background" -filter Gaussian -blur 0x20 "$background"
+convert "$background" "$XDG_CACHE_HOME/i3lock/background.png"
+rm $background
+
+exit 0

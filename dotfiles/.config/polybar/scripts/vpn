@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+c1=$(sed '16q;d' ~/.cache/wal/colors)
+c2=$(sed '4q;d' ~/.cache/wal/colors)
+c3=$(sed '15q;d' ~/.cache/wal/colors)
+i1=""
+i2=""
+if [[ "$(nmcli networking connectivity)" == "full" ]]; then
+  if [[ -n "$(pgrep wg)" ]]; then
+    resp=$(curl -m 1,5 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")
+    con=$(echo "$resp" | sed '1q;d')
+    if [ -n "$con" ] && [ "$con" = "true" ]; then
+      peer=$(echo "$resp" | sed '2q;d' | tr -d "\"")
+      echo "%{F$c1}$i1 azirevpn-$peer%{F-}"
+    else
+      peer=$(ip link show | grep vpn | awk '{print $2}' | sed 's/://')
+      echo "%{F$c3}$i2 $peer%{F-}"
+    fi
+  else
+    echo "%{F$c2}$i2 wireguard%{F-}"
+  fi
+else
+  echo "%{F$c2}$i2 connectivity%{F-}"
+fi

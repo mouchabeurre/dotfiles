@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#[[ $UID == 0 ]] || exec sudo "$0" "$@"
+ACTIVE=$(ip link show | grep vpn | awk '{print $2}' | sed 's/://')
+
+PEERS="$(sudo ls /etc/wireguard | cut -c -12)"
+PEER=$(printf "$PEERS\nNone" \
+  | fzf --prompt="Peer: ")
+if [[ -n $PEER ]]; then
+  if [[ -n "$ACTIVE" || $PEER == "None" ]]; then
+    printf "[+] Closing $ACTIVE%b\n"
+    wg-quick down $ACTIVE &> /dev/null && printf "[+] Closed $ACTIVE%b\n"
+  fi
+  if [[ $PEER != "None" ]]; then
+    printf "[+] Opening $PEER%b\n"
+    wg-quick up $PEER &> /dev/null && printf "[+] Opened $PEER%b\n"
+  fi
+fi

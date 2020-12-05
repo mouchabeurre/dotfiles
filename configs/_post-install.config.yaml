@@ -1,0 +1,14 @@
+- shell:
+  -
+    command: ./scripts/oh-my-zsh/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install oh-my-zsh
+
+  -
+    command: ./scripts/azirevpn/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Configure azirevpn wireguard interfaces
