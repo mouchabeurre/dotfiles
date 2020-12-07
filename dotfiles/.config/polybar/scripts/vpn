@@ -3,11 +3,11 @@
 c1=$(sed '16q;d' ~/.cache/wal/colors)
 c2=$(sed '4q;d' ~/.cache/wal/colors)
 c3=$(sed '15q;d' ~/.cache/wal/colors)
-i1=""
-i2=""
+i1="󰥜"
+i2="󰀨"
 if [[ "$(nmcli networking connectivity)" == "full" ]]; then
   if [[ -n "$(pgrep wg)" ]]; then
-    resp=$(curl -m 1,5 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")
+    resp=$(curl -m 2 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")
     con=$(echo "$resp" | sed '1q;d')
     if [ -n "$con" ] && [ "$con" = "true" ]; then
       peer=$(echo "$resp" | sed '2q;d' | tr -d "\"")

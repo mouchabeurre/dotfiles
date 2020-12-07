@@ -63,7 +63,7 @@ export NVM_LAZY_LOAD=true
 plugins=(
   git
   colored-man-pages
-  zsh-nvm
+  # zsh-nvm
   pass
   fzf
   fd

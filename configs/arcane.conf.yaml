@@ -5,9 +5,23 @@
 
 - shell:
   -
-    command: ./scripts/preprocess arc
+    command: ./scripts/trizen/install
+    stdin: true
     stdout: true
     stderr: true
+    description: Install package manager trizen
+
+  -
+    command: ./scripts/packages/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install base packages
+
+  -
+    stdout: true
+    stderr: true
+    command: ./scripts/generate_files arc
     description: Pre-process files for "arcane" configuration
 
 - link:
@@ -49,3 +63,25 @@
 - clean:
     ~/.config:
       recursive: true
+
+- shell:
+  -
+    command: ./scripts/i3-window-killer/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install i3 script i3-windows-killer
+
+  -
+    command: ./scripts/oh-my-zsh/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install zsh shell plugin manager oh-my-zsh
+
+  -
+    command: ./scripts/azirevpn/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Configure azirevpn wireguard interfaces

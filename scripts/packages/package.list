@@ -1,4 +1,5 @@
 alacritty
+bc
 bzip2
 chromium
 clipmenu
@@ -6,6 +7,7 @@ clipnotify
 code
 diffutils
 dunst
+emptty
 fd
 feh
 file
@@ -37,6 +39,7 @@ neovim
 networkmanager
 ntfs-3g
 ntp
+nvm
 p7zip
 pass
 patch
@@ -55,6 +58,7 @@ sed
 shadow
 stow
 sudo
+systemd-resolvconf
 tar
 the_silver_searcher
 ttf-bitstream-vera
@@ -62,6 +66,7 @@ ttf-dejavu
 ttf-fira-mono
 ttf-hack
 ttf-liberation
+ttf-material-design-icons-extended
 ufw
 unzip
 usbutils
@@ -72,6 +77,8 @@ which
 wireguard-tools
 xdg-user-dirs
 xf86-input-libinput
+xorg-xdpyinfo
+xorg-xrandr
 xsel
 youtube-dl
 zsh

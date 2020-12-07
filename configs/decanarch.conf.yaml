@@ -5,10 +5,24 @@
 
 - shell:
   -
-    command: ./scripts/preprocess arc
+    command: ./scripts/trizen/install
+    stdin: true
     stdout: true
     stderr: true
-    description: Pre-process files for "decane" configuration
+    description: Install package manager trizen
+
+  -
+    command: ./scripts/packages/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install base packages
+
+  -
+    stdout: true
+    stderr: true
+    command: ./scripts/generate_files dec
+    description: Pre-process files for "decanarch" configuration
 
 - link:
     ~/.config/dunst/dunstrc: .generated/.config/dunst/dunstrc
@@ -26,13 +40,13 @@
     ~/.config/polybar/config: .generated/.config/polybar/config
     ~/.config/polybar/top: .generated/.config/polybar/top
     ~/.config/polybar/bot: .generated/.config/polybar/bot
-    ~/.config/polybar/scripts/bluetooth: .generated/.config/polybar/scripts/bluetooth
     ~/.config/polybar/scripts/uptime: .generated/.config/polybar/scripts/uptime
     ~/.config/polybar/scripts/vpn: .generated/.config/polybar/scripts/vpn
     ~/.config/ranger/rc.conf: .generated/.config/ranger/rc.conf
     ~/.config/rofi/config: .generated/.config/rofi/config
     ~/.config/wal/dunst: .generated/.config/wal/dunst
     ~/.config/wal/lock: .generated/.config/wal/lock
+    ~/.config/wal/templates/alacritty.colors.yml: .generated/.config/wal/templates/alacritty.colors.yml
     ~/.config/wal/templates/colors-rofi.rasi: .generated/.config/wal/templates/colors-rofi.rasi
     ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
     ~/.config/wal/wal-set: .generated/.config/wal/wal-set
@@ -48,3 +62,25 @@
 - clean:
     ~/.config:
       recursive: true
+
+- shell:
+  -
+    command: ./scripts/i3-window-killer/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install i3 script i3-windows-killer
+
+  -
+    command: ./scripts/oh-my-zsh/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install zsh shell plugin manager oh-my-zsh
+
+  -
+    command: ./scripts/azirevpn/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Configure azirevpn wireguard interfaces

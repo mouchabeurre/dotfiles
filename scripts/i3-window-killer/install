@@ -5,7 +5,7 @@ die() {
   exit 1
 }
 log() {
-  echo "[+] ${1}."
+  echo "[#] ${1}."
 }
 
 PROGRAM_NAME="i3-window-killer"

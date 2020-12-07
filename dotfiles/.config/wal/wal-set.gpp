@@ -19,7 +19,7 @@ generate_lock_screen(){
   fi
 }
 
-#if mode == arc
+#if __CFG == arc
 rebuild_st(){
   ("$XDG_CONFIG_HOME/wal/st") &
   wait $!
@@ -36,7 +36,7 @@ main() {
   echo "[#] applying new colorscheme"
   reload_dunst
   generate_lock_screen
-#if mode == arc
+#if __CFG == arc
   rebuild_st
 #endif
 }

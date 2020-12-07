@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#if mode == arc
+#if __CFG == arc
 options="Suspend\nExit\nShut down\nReboot"
-#elif mode == dec
+#elif __CFG == dec
 options="Suspend\nExit\nShut down\nReboot\nHibernate"
 #endif
 res="$(printf "$options" \
@@ -26,7 +26,7 @@ case "$res" in
   "Reboot")
     clear_clips && systemctl reboot
     ;;
-#if mode == dec
+#if __CFG == dec
   "Hibernate")
     ~/.config/i3/scripts/lock && clear_clips && systemctl hibernate
     ;;

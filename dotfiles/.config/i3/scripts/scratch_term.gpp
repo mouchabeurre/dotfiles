@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 instance=$(pgrep -f __scratch)
 if [[ -z $instance ]]; then
-#if mode == arc
+#if __CFG == arc
   st -g 130x40 -c __scratch &
-#elif mode == dec
-  alacritty -d 130x40 --class __scratch &
+#elif __CFG == dec
+  alacritty -d 130 40 --class __scratch &
 #endif
 fi

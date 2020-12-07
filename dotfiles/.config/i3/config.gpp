@@ -57,14 +57,14 @@ smart_gaps on
 floating_modifier $mod
 
 # Start a terminal
-#if mode == arc
+#if __CFG == arc
 bindsym $mod+Return exec --no-startup-id st
-#elif mode == dec
+#elif __CFG == dec
 bindsym $mod+Return exec --no-startup-id alacritty
 #endif
 
 # Toggle scratchpad terminal
-bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/scratch_term; [class="__scratch"] scratchpad show
+bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/scratch_term; [instance="__scratch"] scratchpad show
 
 # Kill focused window
 bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/scripts/kill
@@ -166,7 +166,7 @@ bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
 bindsym Shift+XF86AudioLowerVolume exec --no-startup-id amixer set Master 18%
 bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id amixer set Master 100%
 
-#if mode == arc
+#if __CFG == arc
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
 bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
@@ -272,6 +272,6 @@ exec --no-startup-id xset r rate 200 30
 exec --no-startup-id picom
 # Drop-down terminal
 exec --no-startup-id sleep 1; ~/.config/i3/scripts/scratch_term
-for_window [class="__scratch"] floating toggle move scratchpad
+for_window [instance="__scratch"] floating toggle move scratchpad
 # Notification demon
 exec --no-startup-id dunst -config ~/.config/dunst/dunstrc

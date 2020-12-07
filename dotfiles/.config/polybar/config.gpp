@@ -12,36 +12,36 @@ margin-top = 3
 margin-bottom = 3
 
 [bar/top]
-#if mode == arc
+#if __CFG == arc
 monitor = eDP1
-#elif mode == dec
-monitor = HDMI-0
+#elif __CFG == dec
+monitor = HDMI-1
 #endif
 include-file = $XDG_CONFIG_HOME/polybar/top
 modules-left = hostname
 modules-center = date
-#if mode == arc
+#if __CFG == arc
 modules-right = cpu memory filesystem volume bluetooth battery uptime
-#elif mode == dec
+#elif __CFG == dec
 modules-right = cpu memory filesystem volume uptime
 #endif
 
 [bar/bot]
-#if mode == arc
+#if __CFG == arc
 monitor = eDP1
-#elif mode == dec
-monitor = HDMI-0
+#elif __CFG == dec
+monitor = HDMI-1
 #endif
 include-file = $XDG_CONFIG_HOME/polybar/bot
 modules-left = i3 i3msg
 modules-center = xwindow
-#if mode == arc
+#if __CFG == arc
 modules-right = network vpn
-#elif mode == dec
+#elif __CFG == dec
 modules-right = network1 network2 vpn
 #endif
 
-#if mode == arc
+#if __CFG == arc
 [module/battery]
 type = internal/battery
 battery = BAT0
@@ -53,28 +53,28 @@ format-full = <ramp-capacity> <label-full>
 label-charging = %percentage:0\%
 label-discharging = %percentage:0\%
 label-full = %percentage:0\%
-ramp-capacity-0 = 
+ramp-capacity-0 = 󰂎
 ramp-capacity-0-foreground = ${colors.alert}
-ramp-capacity-1 = 
+ramp-capacity-1 = 󰁺
 ramp-capacity-1-foreground = ${colors.alert}
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-ramp-capacity-5 = 
-ramp-capacity-6 = 
-ramp-capacity-7 = 
-ramp-capacity-8 = 
-ramp-capacity-9 = 
-ramp-capacity-10 = 
+ramp-capacity-2 = 󰁻
+ramp-capacity-3 = 󰁼
+ramp-capacity-4 = 󰁽
+ramp-capacity-5 = 󰁾
+ramp-capacity-6 = 󰁿
+ramp-capacity-7 = 󰂀
+ramp-capacity-8 = 󰂁
+ramp-capacity-9 = 󰂂
+ramp-capacity-10 = 󰁹
 format-full-foreground = ${colors.primary}
 format-charging-foreground = ${colors.primary}
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-5 = 
-animation-charging-6 = 
+animation-charging-0 = 󰂆
+animation-charging-1 = 󰂇
+animation-charging-2 = 󰂈
+animation-charging-3 = 󰂉
+animation-charging-4 = 󰂊
+animation-charging-5 = 󰂋
+animation-charging-6 = 󰂅
 animation-charging-framerate = 750
 #endif
 
@@ -82,16 +82,16 @@ animation-charging-framerate = 750
 type = internal/i3
 strip-wsnumbers = true
 enable-scroll = false
-ws-icon-0 = 1;
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
-ws-icon-4 = 5;
-ws-icon-5 = 6;
-ws-icon-6 = 7;
-ws-icon-7 = 8;
-ws-icon-8 = 9;
-ws-icon-default = 
+ws-icon-0 = 1;󰎤
+ws-icon-1 = 2;󰎧
+ws-icon-2 = 3;󰎪
+ws-icon-3 = 4;󰎭
+ws-icon-4 = 5;󰎱
+ws-icon-5 = 6;󰎳
+ws-icon-6 = 7;󰎶
+ws-icon-7 = 8;󰎹
+ws-icon-8 = 9;󰎼
+ws-icon-default = 󰎣
 format = <label-state>
 index-sort = true
 enable-click = true
@@ -125,30 +125,25 @@ time = %H:%M
 time-alt = %A %d.%m.%y %H:%M:%S
 label = %time%
 format = <label>
-format-foreground = ${colors.secondary}
+format-foreground = ${colors.foreground}
 
-#if mode == arc
+#if __CFG == arc
 [module/network]
 type = internal/network
 interface = wlp2s0
 interval = 2
 format-connected-foreground = ${colors.foreground}
 format-disconnected-foreground = ${colors.anotherone}
-format-connected = %{A1:st -c __floating -g 65x25-10+55 -e nmtui:}<label-connected>%{A}
-format-disconnected = %{A1:st -c __floating -g 65x25-10+55 -e nmtui:}<label-disconnected>%{A}
-label-connected = %{T2}%upspeed% %downspeed%%{T-}  %signal% %essid%
-label-disconnected = 
-ramp-signal-0 = 1
-ramp-signal-1 = 2
-ramp-signal-2 = 3
-ramp-signal-3 = 4
-ramp-signal-4 = 5
-ramp-signal-5 = 6
-ramp-signal-6 = 7
-ramp-signal-7 = 8
-ramp-signal-8 = 9
-ramp-signal-9 = 10
-#elif mode == dec
+format-connected = <label-connected> <ramp-signal>
+format-disconnected = <label-disconnected>
+label-connected = %{T2}󰅃%upspeed% 󰅀%downspeed%%{T-} %essid%
+label-disconnected = 󰤮
+ramp-signal-0 = 󰤯
+ramp-signal-1 = 󰤟
+ramp-signal-2 = 󰤢
+ramp-signal-3 = 󰤥
+ramp-signal-4 = 󰤨
+#elif __CFG == dec
 [module/network1]
 type = internal/network
 interval = 1
@@ -156,10 +151,10 @@ accumulate-stats = true
 format-connected-foreground = ${colors.foreground}
 format-disconnected-foreground = ${colors.anotherone}
 interface = enp34s0
-format-connected = %{A1:alacritty --class __floating -d 55 25 --position -10 34 -e nmtui:}<label-connected>%{A}
-format-disconnected = %{A1:alacritty --class __floating -d 55 25 --position -10 34 -e nmtui:}<label-disconnected>%{A}
-label-connected = %{T2}%upspeed% %downspeed%%{T-}  
-label-disconnected = 
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+label-connected = %{T2}󰅃%upspeed%%{O7}󰅀%downspeed%%{T-}%{O7}󰈁
+label-disconnected = 󰈂
 
 [module/network2]
 type = internal/network
@@ -167,17 +162,17 @@ interval = 1
 format-connected-foreground = ${colors.foreground}
 format-disconnected-foreground = ${colors.anotherone}
 interface = wlx0024a59cbb3e
-format-connected = %{A1:st -c __floating -d 55 25 --position -10 34 -e nmtui:}<label-connected>%{A}
-format-disconnected = %{A1:st -c __floating -d 55 25 --position -10 34 -e nmtui:}<label-disconnected>%{A}
-label-connected =  
-label-disconnected = 
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+label-connected = 
+label-disconnected = 
 #endif
 
 [module/vpn]
 type = custom/script
-#if mode == arc
+#if __CFG == arc
 interval = 5
-#elif mode == dec
+#elif __CFG == dec
 interval = 3
 #endif
 exec = $XDG_CONFIG_HOME/polybar/scripts/vpn
@@ -186,22 +181,22 @@ label = "%output%"
 
 [module/uptime]
 type = custom/script
-exec = ~/.config/polybar/scripts/uptime
 interval = 120
-format-prefix = " "
+format-prefix = "󰔉"
 format-prefix-foreground = ${colors.primary}
 format-foreground = ${colors.foreground}
+exec = ~/.config/polybar/scripts/uptime
 
 [module/hostname]
 type = custom/script
 interval = 480
 format = <label>
-format-prefix = " "
-format-prefix-foreground = ${colors.secondary}
+format-prefix = "󰆦 "
+format-prefix-foreground = ${colors.primary}
 format-padding = 0
 exec = echo "$(uname -n)"
 
-#if == arc
+#if __CFG == arc
 [module/bluetooth]
 type = custom/script
 interval = 5
@@ -210,22 +205,22 @@ label = "%output%"
 #endif
 
 [module/volume]
-type = internal/volume
+type = internal/alsa
 master-mixer = Master
 format-volume = <ramp-volume> <label-volume>
 format-muted = <label-muted>
 label-volume = %percentage%
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
-label-muted = 
+ramp-volume-0 = 󰕿
+ramp-volume-1 = 󰖀
+ramp-volume-2 = 󰕾
+label-muted = 󰖁
 
 [module/xwindow]
 type = internal/xwindow
-#if mode == arc
-label = %title:0:40: %
-#elif mode == dec
-label = %title:0:70: %
+#if __CFG == arc
+label = %title:0:40: 󰑀%
+#elif __CFG == dec
+label = %title:0:70: 󰑀%
 #endif
 label-foreground = ${colors.foreground}
 label-padding = 1
@@ -233,27 +228,28 @@ label-padding = 1
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = " "
-label = %percentage%
+format-prefix = "󰍛"
+label = %{O5}%percentage%
 
 [module/memory]
 type = internal/memory
 interval = 3
-format-prefix = " "
-label = %percentage_used%
+format-prefix = "󰆼"
+label = %{O5}%percentage_used%
 
 [module/filesystem]
 type = internal/fs
 interval = 25
-spacing = 0
+spacing = 1
 mount-0 = /
-#if mode == arc
+#if __CFG == arc
 mount-1 = /home
 mount-2 = /var
-#elif mode == dec
-mount-1 = /media/beurre/mount0
+#elif __CFG == dec
+mount-1 = /storage
+mount-2 = /media/beurre/mount0
 #endif
-label-mounted = %{T2}[%mountpoint%:%percentage_used%]%{T-}
+label-mounted = 󰮌%{O5}%mountpoint%:%percentage_used%
 label-unmounted =
 
 ; vim:ft=dosini

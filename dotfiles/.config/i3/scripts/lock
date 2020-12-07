@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BG="$XDG_CACHE_HOME/i3lock/background.png"
+BG="$HOME/.cache/i3lock/background.png"
 if [[ -f "$BG" ]]; then
   i3lock -i "$BG"
 else

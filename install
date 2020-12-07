@@ -9,8 +9,6 @@ BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${BASEDIR}"
 
 CONFIG_DIR="configs"
-PRE_INSTALL_CONFIG="_pre-install.config.yaml"
-POST_INSTALL_CONFIG="_post-install.config.yaml"
 CONFIG="${1}"
 CONFIG_NAME="$(./scripts/getconfigname ${CONFIG})"
 [[ -z "${CONFIG_NAME}" ]] && die "config \"${CONFIG}\" not supported"
@@ -24,6 +22,4 @@ DOTBOT_BIN="bin/dotbot"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_DIR}/${PRE_INSTALL_CONFIG}" "${@}"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_DIR}/${CONFIG_NAME}" "${@}"
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_DIR}/${POST_INSTALL_CONFIG}" "${@}"
