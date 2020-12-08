@@ -5,16 +5,16 @@ PEER=$(printf "${PEERS}\nNone" \
   | fzf --prompt="Peer: ")
 if [[ -n ${PEER} ]]; then
   if [[ -n "${ACTIVE}" || ${PEER} == "None" ]]; then
-    printf "[+] Closing $ACTIVE%b\n"
-    if nmcli c down "${ACTIVE}"; then
+    echo "[#] Closing ${ACTIVE}"
+    if nmcli -w 0 c down "${ACTIVE}"; then
       echo "[+] Closed ${ACTIVE}"
     else
       echo "[!] Couldn't close ${ACTIVE}"
     fi
   fi
-  if [[ $PEER != "None" ]]; then
-    printf "[+] Opening $PEER%b\n"
-    if nmcli c up "${PEER}"; then
+  if [[ "${PEER}" != "None" ]]; then
+    echo "[#] Opening ${PEER}"
+    if nmcli -w 0 c up "${PEER}"; then
       echo "[+] Opened ${PEER}"
     else
       echo "[!] Couldn't open ${PEER}"
