@@ -24,6 +24,9 @@
     command: ./scripts/generate_files dec
     description: Pre-process files for "decanarch" configuration
 
+- create:
+   - ~/.cache/less
+
 - link:
     ~/.config/dunst/dunstrc: .generated/.config/dunst/dunstrc
     ~/.config/fdfind/globalignore: .generated/.config/fdfind/globalignore

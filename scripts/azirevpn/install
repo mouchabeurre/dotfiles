@@ -9,11 +9,51 @@ log() {
 }
 
 WIREGUARD_CONFIGS_DIR="/etc/wireguard"
-[[ ! -z "$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)" ]] && log "wireguard interfaces already generated" && exit 0
-read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " INSTALL
-INSTALL="${INSTALL:-'N'}"
-[[ "${INSTALL}" != 'y' ]] && log "Skipping interfaces generation" && exit 0
-BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "${BASEDIR}" || die "cd ${BASEDIR}"
-./_install || die "couldn't generate configurations"
-log "wireguard interfaces successfully generated"
+if [[ ! -z "$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)" ]]; then
+  log "wireguard interfaces already generated"
+else
+  read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " INSTALL
+  INSTALL="${INSTALL:-'N'}"
+  if [[ "${INSTALL}" != 'y' ]]; then
+    log "Skipping interfaces generation"
+  else
+    BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    cd "${BASEDIR}" || die "cd ${BASEDIR}"
+    ./_install || die "couldn't generate configurations"
+    log "wireguard interfaces successfully generated"
+  fi
+fi
+
+CONFIGS="$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)"
+[[ -z "${CONFIGS}" ]] && log "No interface to import" && exit 0
+CONNECTIONS="$(nmcli -g NAME c show | grep azirevpn | awk '{print $1}')"
+ACTIVE_CONNECTION="$(nmcli -g NAME c show --active | grep azirevpn)"
+log "Importing new interfaces to Network Manager"
+if [[ ! -z "${ACTIVE_CONNECTION}" ]]; then
+  log "Disconnecting \"${ACTIVE_CONNECTION}\""
+  nmcli c down "${ACTIVE_CONNECTION}"
+fi
+for CONFIG in ${CONFIGS}
+do
+  CONFIG_NAME="$(basename ${CONFIG} .conf)"
+  EXISTS=0
+  for CONNECTION in ${CONNECTIONS}
+  do
+    if [[ "${CONNECTION}" == "${CONFIG_NAME}" ]]; then
+      EXISTS=1
+      break
+    fi
+  done
+  if [[ ${EXISTS} -eq 0 ]]; then
+    log "Importing ${CONFIG_NAME}"
+    sudo nmcli c import type wireguard file "${WIREGUARD_CONFIGS_DIR}/${CONFIG}"
+    nmcli c down "${CONFIG_NAME}"
+  else
+    log "\"${CONFIG_NAME}\" already imported, skipping"
+  fi
+done
+if [[ ! -z "${ACTIVE_CONNECTION}" ]]; then
+  log "Reconnecting \"${ACTIVE_CONNECTION}\""
+  nmcli c up "${ACTIVE_CONNECTION}"
+fi
+log "Done importing interfaces"

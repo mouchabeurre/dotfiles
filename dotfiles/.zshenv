@@ -1,5 +1,6 @@
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
+export LESSHISTFILE=$XDG_CACHE_HOME/less/lesshst
 export MYBIN=$HOME/.bin
 export DENO_INSTALL=$MYBIN/deno
 export NVM_DIR=$MYBIN/nvm
