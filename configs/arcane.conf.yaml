@@ -59,6 +59,7 @@
     ~/.scripts/mypass: .generated/.scripts/mypass
     ~/.scripts/myplug: .generated/.scripts/myplug
     ~/.scripts/myvpn: .generated/.scripts/myvpn
+    ~/.scripts/mywal: .generated/.scripts/mywal
     ~/.xprofile: .generated/.xprofile
     ~/.zshenv: .generated/.zshenv
     ~/.zshrc: .generated/.zshrc

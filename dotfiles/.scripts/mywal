@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+PICTURES_DIR="$(xdg-user-dir PICTURES)"
+cd "${PICTURES_DIR}"
+echo "[?] Select wallpaper:"
+WALL="$(fd -d 1 -t f . Wallpapers inspiration | fzf)"
+[[ -z "${WALL}" ]] && exit 0
+echo "[+] Wallpaper: \"${WALL}\""
+BACKENDS="wal"
+if command -v schemer2 &> /dev/null; then
+  BACKENDS="${BACKENDS}\nschemer2"
+fi
+if command -v haishoku &> /dev/null; then
+  BACKENDS="${BACKENDS}\nhaishoku"
+fi
+if command -v colorthief &> /dev/null; then
+  BACKENDS="${BACKENDS}\ncolorthief"
+fi
+if command -v colorz &> /dev/null; then
+  BACKENDS="${BACKENDS}\ncolorz"
+fi
+echo "[?] Choose backend:"
+BACKEND="$(printf ${BACKENDS} | fzf)"
+[[ -z "${BACKEND}" ]] && exit 0
+echo "[+] Backend: \"${BACKEND}\""
+if [[ -f "${XDG_CONFIG_HOME}/wal/wal-set" ]]; then
+  wal --backend "${BACKEND}" -i "${PICTURES_DIR}/${WALL}" -o "${XDG_CONFIG_HOME}"/wal/wal-set
+else
+  wal --backend "${BACKEND}" -i "${PICTURES_DIR}/${WALL}"
+fi

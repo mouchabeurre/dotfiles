@@ -247,7 +247,6 @@ mount-1 = /home
 mount-2 = /var
 #elif __CFG == dec
 mount-1 = /storage
-mount-2 = /media/beurre/mount0
 #endif
 label-mounted = 󰮌%{O5}%mountpoint%:%percentage_used%
 label-unmounted =
