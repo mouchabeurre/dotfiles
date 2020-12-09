@@ -47,7 +47,7 @@
     ~/.config/polybar/scripts/uptime: .generated/.config/polybar/scripts/uptime
     ~/.config/polybar/scripts/vpn: .generated/.config/polybar/scripts/vpn
     ~/.config/ranger/rc.conf: .generated/.config/ranger/rc.conf
-    ~/.config/rofi/config: .generated/.config/rofi/config
+    ~/.config/rofi/config.rasi: .generated/.config/rofi/config.rasi
     ~/.config/wal/dunst: .generated/.config/wal/dunst
     ~/.config/wal/lock: .generated/.config/wal/lock
     ~/.config/wal/st: .generated/.config/wal/st
