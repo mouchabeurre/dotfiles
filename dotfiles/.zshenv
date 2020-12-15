@@ -5,7 +5,8 @@ export MYBIN=$HOME/.bin
 export DENO_INSTALL=$MYBIN/deno
 export NVM_DIR=$MYBIN/nvm
 export GOPATH=$MYBIN/go
-export PATH=$PATH:$HOME/.scripts:$HOME/.cargo/bin:$DENO_INSTALL/bin:$GOPATH/bin
+export CARGO_HOME=$MYBIN/cargo
+export PATH=$PATH:$HOME/.scripts:$CARGO_HOME/bin:$DENO_INSTALL/bin:$GOPATH/bin
 
 export EDITOR=nvim
 export GIT_EDITOR=nvim

@@ -6,19 +6,19 @@ c3=$(sed '15q;d' ~/.cache/wal/colors)
 i1="󰥜"
 i2="󰀨"
 if [[ "$(nmcli networking connectivity)" == "full" ]]; then
-  if [[ -n "$(pgrep wg)" ]]; then
-    resp=$(curl -m 2 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")
-    con=$(echo "$resp" | sed '1q;d')
-    if [ -n "$con" ] && [ "$con" = "true" ]; then
-      peer=$(echo "$resp" | sed '2q;d' | tr -d "\"")
-      echo "%{F$c1}$i1 azirevpn-$peer%{F-}"
+  if [[ -n "$(nmcli -g TYPE c show --active | grep wireguard)" ]]; then
+    RESPONSE="$(curl -m 2 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")"
+    CONNECTED="$(sed '1q;d' <<<"${RESPONSE}")"
+    if [[ -n "${CONNECTED}" ]] && [[ "${CONNECTED}" = "true" ]]; then
+      LOCATION="$(sed '2q;d' <<<"${RESPONSE}")"
+      echo "%{F${c1}}${i1} azirevpn-${LOCATION//\"/}%{F-}"
     else
-      peer=$(ip link show | grep vpn | awk '{print $2}' | sed 's/://')
-      echo "%{F$c3}$i2 $peer%{F-}"
+      CONNECTION="$(nmcli -g NAME c show --active | grep azirevpn)"
+      echo "%{F${c3}}${i2} ${CONNECTION}%{F-}"
     fi
   else
-    echo "%{F$c2}$i2 wireguard%{F-}"
+    echo "%{F${c2}}${i2} wireguard%{F-}"
   fi
 else
-  echo "%{F$c2}$i2 connectivity%{F-}"
+  echo "%{F${c2}}${i2} connectivity%{F-}"
 fi
