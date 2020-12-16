@@ -2,7 +2,7 @@
 instance=$(pgrep -f __scratch)
 if [[ -z $instance ]]; then
 #if __CFG == arc
-  st -g 130x40 -c __scratch &
+  st -g 130x40 -n __scratch &
 #elif __CFG == dec
   alacritty -d 130 40 --class __scratch &
 #endif
