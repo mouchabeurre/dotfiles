@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-declare -A CONFIGS=( ["arc"]="arcane.conf.yaml" ["dec"]="decanarch.conf.yaml")
-CONFIG="${1}"
-[[ -z "${CONFIG}" ]] && exit 1
-NAME="${CONFIGS[${CONFIG}]}"
-[[ -z "${NAME}" ]] && exit 1 || echo "${NAME}"

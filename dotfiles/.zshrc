@@ -54,8 +54,6 @@ ZSH_THEME="bureau"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-export NVM_LAZY_LOAD=true
-
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
@@ -63,7 +61,7 @@ export NVM_LAZY_LOAD=true
 plugins=(
   git
   colored-man-pages
-  # zsh-nvm
+  asdf
   pass
   fzf
   fd

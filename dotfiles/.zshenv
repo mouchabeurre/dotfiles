@@ -1,18 +1,18 @@
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
-export LESSHISTFILE=$XDG_CACHE_HOME/less/lesshst
 export MYBIN=$HOME/.bin
-export DENO_INSTALL=$MYBIN/deno
-export NVM_DIR=$MYBIN/nvm
 export GOPATH=$MYBIN/go
 export CARGO_HOME=$MYBIN/cargo
-export PATH=$PATH:$HOME/.scripts:$CARGO_HOME/bin:$DENO_INSTALL/bin:$GOPATH/bin
+export PATH=$PATH:$HOME/.scripts:$CARGO_HOME/bin:$GOPATH/bin
 
+export LESSHISTFILE=$XDG_CACHE_HOME/less/lesshst
 export EDITOR=nvim
 export GIT_EDITOR=nvim
 export FZF_DEFAULT_OPTS="--height 40% --reverse --no-bold"
 export CM_LAUNCHER=rofi
-export NVM_LAZY=1
+export ASDF_DIR=$MYBIN/asdf
+export ASDF_CONFIG_FILE=$XDG_CACHE_HOME/asdf/asdfrc
+export ASDF_DATA_DIR=$ASDF_DIR
 
 export MOUNT0=/mnt/$USER/mount0
 export MOUNT1=/mnt/$USER/mount1

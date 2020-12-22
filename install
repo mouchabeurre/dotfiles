@@ -10,8 +10,17 @@ cd "${BASEDIR}"
 
 CONFIG_DIR="configs"
 CONFIG="${1}"
-CONFIG_NAME="$(./scripts/getconfigname ${CONFIG})"
-[[ -z "${CONFIG_NAME}" ]] && die "config \"${CONFIG}\" not supported"
+CACHED_CONFIG="${BASEDIR}/${CONFIG_DIR}/.cached-config"
+USE_CACHED=0
+if [[ -z "${CONFIG}" ]]; then
+  if [[ -f "${CACHED_CONFIG}" ]]; then
+    CONFIG="$(head -n 1 < "${CACHED_CONFIG}")"
+    USE_CACHED=1
+  else
+    die "config must be specified at least once"
+  fi
+fi
+[[ ${USE_CACHED} -eq 0 ]] && printf "${CONFIG}" > "${CACHED_CONFIG}"
 shift
 
 set -e
@@ -22,4 +31,4 @@ DOTBOT_BIN="bin/dotbot"
 git -C "${DOTBOT_DIR}" submodule sync --quiet --recursive
 git submodule update --init --recursive "${DOTBOT_DIR}"
 
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG_DIR}/${CONFIG_NAME}" "${@}"
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "${CONFIG}" "${@}"

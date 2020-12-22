@@ -38,6 +38,7 @@
     ~/.config/i3/scripts/scratch_term: .generated/.config/i3/scripts/scratch_term
     ~/.config/mpv/mpv.conf: .generated/.config/mpv/mpv.conf
     ~/.config/nvim/init.vim: .generated/.config/nvim/init.vim
+    ~/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh: .generated/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh
     ~/.config/oh-my-zsh/custom/themes/bureau.zsh-theme: .generated/.config/oh-my-zsh/custom/themes/bureau.zsh-theme
     ~/.config/picom/picom.conf: .generated/.config/picom/picom.conf
     ~/.config/polybar/config: .generated/.config/polybar/config
