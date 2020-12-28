@@ -10,7 +10,7 @@
     padding = 6
     horizontal_padding = 6
     frame_width = 2
-    frame_color = "#aaaaaa"
+    frame_color = "{foreground}"
     separator_color = frame
     sort = yes
     idle_threshold = 120
@@ -31,14 +31,15 @@
     icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
     sticky_history = yes
     history_length = 20
-    dmenu = /usr/bin/dmenu -p dunst:
+    dmenu = /usr/bin/rofi -dmenu -p dunst:
     browser = /usr/bin/firefox -new-tab
     always_run_script = true
     title = Dunst
     class = Dunst
     startup_notification = false
     force_xinerama = false
-    [experimental]
+
+[experimental]
     per_monitor_dpi = false
 
 [shortcuts]
@@ -48,17 +49,20 @@
     context = ctrl+shift+period
 
 [urgency_low]
-    background = "#151213"
-    foreground = "#7d8482"
+    background = "{background}"
+    foreground = "{foreground}"
     timeout = 4
 
 [urgency_normal]
-    background = "#151213"
-    foreground = "#b4bdba"
+    background = "{background}"
+    foreground = "{color3}"
+    frame_color = "{color3}"
     timeout = 6
 
 [urgency_critical]
-    background = "#151213"
-    foreground = "#b4bdba"
-    frame_color = "#86766F"
+    background = "{background}"
+    foreground = "{color1}"
+    frame_color = "{color1}"
     timeout = 0
+
+# vim: ft=cfg

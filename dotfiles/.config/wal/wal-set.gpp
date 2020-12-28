@@ -1,47 +1,51 @@
 #!/usr/bin/env bash
 
+log() {
+  echo "[#] $1."
+}
+success() {
+  echo "[+] $1."
+}
+error() {
+  echo "[!] $1."
+}
+
 reload_dunst() {
-  if [[ `command -v dunst >/dev/null 2>&1` ]]; then
-    "$XDG_CONFIG_HOME/wal/dunst"
-    if [[ $? == 0 ]]; then
-      pkill dunst && dunst -config "$XDG_CONFIG_HOME/dunst/dunstrc" &
-      notify-send "wal-set" "dunst reloaded"
-    fi
-  else
-    echo "[#] dunst not installed, skipping"
+  local CONFIG="${XDG_CACHE_HOME}/wal/dunstrc"
+  if command -v dunst > /dev/null 2>&1 && [[ -f "${CONFIG}" ]]; then
+    log "Reloading dunst"
+    pkill dunst && dunst -config "${CONFIG}" &
+    notify-send "wal-set" "dunst successfully reloaded"
+    success "dunst done"
   fi
 }
 
 generate_lock_screen(){
-  "$XDG_CONFIG_HOME/wal/lock"
-  if [[ $? == 0 ]]; then
-    notify-send "wal-set" "lock screen generated"
+  log "Generating lock screen background"
+  if "${XDG_CONFIG_HOME}/wal/lock"; then
+    success "Lock screen successfully generated"
+  else
+    error "Couldn't generate lock screen"
   fi
 }
 
 #if __CFG == arc
 rebuild_st(){
-  ("$XDG_CONFIG_HOME/wal/st") &
+  ("${XDG_CONFIG_HOME}/wal/st") &
   wait $!
   if [[ $? == 0 ]]; then
-    notify-send "wal-set" "rebuilt st"
+    success "st successfully rebuilt"
   else
-    notify-send -u critical "wal-set" "didn't rebuilt st"
+    error "Coulnd't rebuild st"
   fi
 }
 #endif
 
-main() {
-  sleep 2
-  echo "[#] applying new colorscheme"
-  reload_dunst
-  generate_lock_screen
+sleep 2
+log "Executing post-update scripts"
+reload_dunst
+generate_lock_screen
 #if __CFG == arc
-  rebuild_st
+rebuild_st
 #endif
-}
-
-main && exit 0
-# lightdm-gtk-greeter
-# cp path/to/image /usr/share/pixmaps
-# nvim /etc/lightdm/lightdm-gtk-greeter.conf
+log "Done with post-update scripts"

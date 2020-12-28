@@ -1,13 +1,13 @@
 colors:
   # Default colors
   primary:
-    background: '{color0}'
-    foreground: '{color15}'
+    background: '{background}'
+    foreground: '{foreground}'
 
   # Cursor colors
   cursor:
-   text: '{color0}'
-   cursor: '{color15}'
+   text: '{background}'
+   cursor: '{cursor}'
 
   # Normal colors
   normal:

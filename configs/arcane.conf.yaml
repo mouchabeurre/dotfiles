@@ -28,7 +28,6 @@
    - ~/.cache/less
 
 - link:
-    ~/.config/dunst/dunstrc: .generated/.config/dunst/dunstrc
     ~/.config/fdfind/globalignore: .generated/.config/fdfind/globalignore
     ~/.config/i3/config: .generated/.config/i3/config
     ~/.config/i3/scripts/bar: .generated/.config/i3/scripts/bar
@@ -54,6 +53,7 @@
     ~/.config/wal/st: .generated/.config/wal/st
     ~/.config/wal/templates/colors-rofi.rasi: .generated/.config/wal/templates/colors-rofi.rasi
     ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
+    ~/.config/wal/templates/dunstrc: .generated/.config/wal/templates/dunstrc
     ~/.config/wal/wal-set: .generated/.config/wal/wal-set
     ~/.gitconfig: .generated/.gitconfig
     ~/.scripts/mympv: .generated/.scripts/mympv
