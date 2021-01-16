@@ -28,6 +28,7 @@
    - ~/.cache/less
 
 - link:
+    ~/.config/broot/conf.hjson: .generated/.config/broot/conf.hjson
     ~/.config/fdfind/globalignore: .generated/.config/fdfind/globalignore
     ~/.config/i3/config: .generated/.config/i3/config
     ~/.config/i3/scripts/bar: .generated/.config/i3/scripts/bar

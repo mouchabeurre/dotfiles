@@ -113,3 +113,5 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type d --follow --ignore-file $XDG_CONFIG_HOME/fdfind/globalignore . "$1"
 }
+# broot companion function
+source $XDG_CONFIG_HOME/broot/launcher/bash/br

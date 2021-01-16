@@ -28,6 +28,8 @@
    - ~/.cache/less
 
 - link:
+    ~/.config/alacritty/alacritty.yml: .generated/.config/alacritty/alacritty.yml
+    ~/.config/broot/conf.hjson: .generated/.config/broot/conf.hjson
     ~/.config/emptty: .generated/.config/emptty
     ~/.config/fdfind/globalignore: .generated/.config/fdfind/globalignore
     ~/.config/i3/config: .generated/.config/i3/config
