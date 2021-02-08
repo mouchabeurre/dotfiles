@@ -31,7 +31,7 @@ ACTIVE_CONNECTION="$(nmcli -g UUID c show --active | grep azirevpn)"
 log "Importing new interfaces to Network Manager"
 if [[ ! -z "${ACTIVE_CONNECTION}" ]]; then
   log "Disconnecting \"${ACTIVE_CONNECTION}\""
-  nmcli -w 0 c down "${ACTIVE_CONNECTION}"
+  nmcli c down "${ACTIVE_CONNECTION}"
 fi
 for CONFIG in ${CONFIGS}
 do
@@ -46,15 +46,15 @@ do
   done
   if [[ ${EXISTS} -eq 0 ]]; then
     log "Importing ${CONFIG_NAME}"
-    sudo nmcli -w 0 c import type wireguard file "${WIREGUARD_CONFIGS_DIR}/${CONFIG}"
-    nmcli -w 0 c down "${CONFIG_NAME}"
-    nmcli -w 0 c modify "${CONFIG_NAME}" autoconnect no
+    sudo nmcli c import type wireguard file "${WIREGUARD_CONFIGS_DIR}/${CONFIG}"
+    nmcli c down "${CONFIG_NAME}"
+    nmcli c modify "${CONFIG_NAME}" autoconnect no
   else
     log "\"${CONFIG_NAME}\" already imported, skipping"
   fi
 done
 if [[ ! -z "${ACTIVE_CONNECTION}" ]]; then
   log "Reconnecting \"${ACTIVE_CONNECTION}\""
-  nmcli -w 0 c up "${ACTIVE_CONNECTION}"
+  nmcli c up "${ACTIVE_CONNECTION}"
 fi
 log "Done importing interfaces"

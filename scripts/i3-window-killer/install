@@ -21,11 +21,9 @@ UPDATE="${UPDATE:-'N'}"
 if [[ ! -e "${PROGRAM_DIR}/${BIN}" ]] || [[ "${UPDATE}" == 'y' ]]; then
   log "${PROGRAM_NAME} needs to be built"
   command -v cargo 2>&1 > /dev/null || die "cargo not installed"
-  {
-    local START="$(pwd)"
-    cd "${PROGRAM_DIR}" || die "cd ${PROGRAM_DIR}"
-    cargo b --release
-    cd "${START}" || die "cd ${START}"
-  }
+  local START="$(pwd)"
+  cd "${PROGRAM_DIR}" || die "cd ${PROGRAM_DIR}"
+  cargo b --release
+  cd "${START}" || die "cd ${START}"
   log "${PROGRAM_NAME} successfully built"
 fi
