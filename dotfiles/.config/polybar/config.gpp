@@ -15,7 +15,7 @@ margin-bottom = 3
 #if __CFG == arc
 monitor = eDP1
 #elif __CFG == dec
-monitor = HDMI-1
+monitor = HDMI-A-0
 #endif
 include-file = $XDG_CONFIG_HOME/polybar/top
 modules-left = hostname
@@ -30,7 +30,7 @@ modules-right = cpu memory filesystem volume uptime
 #if __CFG == arc
 monitor = eDP1
 #elif __CFG == dec
-monitor = HDMI-1
+monitor = HDMI-A-0
 #endif
 include-file = $XDG_CONFIG_HOME/polybar/bot
 modules-left = i3 i3msg
