@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+WALL="$(head -n 1 "${XDG_CACHE_HOME}/wal/wal")"
+RES="$(xdpyinfo | grep "dimensions" | awk '{ print $2 }')"
+mkdir -p "${XDG_CACHE_HOME}/i3lock"
+TEMP_DIR="$(mktemp -d)"
+TEMP_WALL="${TEMP_DIR}/$(basename ${WALL})"
+cp "${WALL}" "${TEMP_WALL}"
+convert "${TEMP_WALL}" -resize "${RES}""^" -gravity center -extent "${RES}" "${TEMP_WALL}" || exit 1
+convert "${TEMP_WALL}" -filter Gaussian -blur 0x20 "${TEMP_WALL}" || exit 1
+convert "${TEMP_WALL}" "${XDG_CACHE_HOME}/i3lock/background.png" || exit 1
+rm -rf ${TEMP_DIR}

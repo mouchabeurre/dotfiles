@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+ST_DIR="${MYBIN}/st"
+[[ -d "${ST_DIR}" ]] || exit 1
+cd "${ST_DIR}" && sudo make clean install || exit 1

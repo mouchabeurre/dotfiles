@@ -8,13 +8,19 @@ log() {
   echo "[#] ${1}."
 }
 
+read -p "[?] Install wireguard interfaces for azirevpn ? [y/N]: " INSTALL
+INSTALL="${INSTALL:-'N'}"
+log "> ${INSTALL}"
+[[ "${INSTALL}" != 'y' ]] && log "Skipping interfaces installation" && exit 0
+
 WIREGUARD_CONFIGS_DIR="/etc/wireguard"
 if [[ ! -z "$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)" ]]; then
   log "wireguard interfaces already generated"
 else
-  read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " INSTALL
-  INSTALL="${INSTALL:-'N'}"
-  if [[ "${INSTALL}" != 'y' ]]; then
+  read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " GENERATE
+  GENERATE="${GENERATE:-'N'}"
+  log "> ${GENERATE}"
+  if [[ "${GENERATE}" != 'y' ]]; then
     log "Skipping interfaces generation"
   else
     BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

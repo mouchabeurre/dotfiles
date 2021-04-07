@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+NAMESPACE="vpn"
+CONFIG_DIR="/etc/wireguard"
+NETNS_DIR="/etc/netns/${NAMESPACE}"
+NONE_CONFIG="None"
+
+die() {
+  echo "[!] Exiting: ${1}" >&2
+  exit 1
+}
+# prompt config
+NAMESPACE_EXISTS="$(ip -j netns list | jq --arg NS "${NAMESPACE}" '.[]|select(.name==$NS)')"
+if [[ -z "${NAMESPACE_EXISTS}" ]]; then
+  echo "[+] Creating namespace \"${NAMESPACE}\""
+  sudo ip netns add "${NAMESPACE}" || die "couldn't create namespace"
+  if [[ ! -e "${NETNS_DIR}/nsswitch.conf" ]]; then
+    sudo sed -r '/^hosts/ s/\[!UNAVAIL=return\]\ //' /etc/nsswitch.conf > "${NETNS_DIR}/nsswitch.conf" || die "couldn't copy nsswitch"
+  fi
+  echo "[+] namespace \"${NAMESPACE}\" created"
+fi
+ACTIVE_CONFIG="$(sudo ip -j -n vpn link show up | jq -r '.[]|select(.|length>0)|.ifname')"
+if [[ -n "${ACTIVE_CONFIG}" ]]; then
+  CONFIGS="$(sudo fd -t f -e conf -E "*${ACTIVE_CONFIG}*" "" "${CONFIG_DIR}" -x echo {/.})"
+  CONFIGS="${NONE_CONFIG}\n${CONFIGS}"
+  echo "[#] Current interface: \"${ACTIVE_CONFIG}\""
+else
+  CONFIGS="$(sudo fd -0 -t f -e conf "" ${CONFIG_DIR} -x echo {/.})"
+fi
+CONFIG=$(printf "${CONFIGS}" | fzf --prompt="Interface: ")
+[[ -n "${CONFIG}" ]] || exit 1
+echo "[+] Selected interface: \"${CONFIG}\""
+if [[ -n "${ACTIVE_CONFIG}" || "${CONFIG}" == "${NONE_CONFIG}" ]]; then
+  echo "[#] Closing \"${ACTIVE_CONFIG}\""
+  sudo ip -n "${NAMESPACE}" link set "${ACTIVE_CONFIG}" down || die "couldn't down active link"
+  sudo ip -n "${NAMESPACE}" link del "${ACTIVE_CONFIG}" || die "couldn't delete active link"
+  echo "[+] Closed \"${ACTIVE_CONFIG}\""
+fi
+if [[ "${CONFIG}" != "${NONE_CONFIG}" ]]; then
+  sudo ip link add "${CONFIG}" type wireguard || die "couldn't create wg link"
+  CONFIG_CONTENT="$(sudo sed -r '/^(Address|DNS)/ s/^(.*)$/#\1/g' "${CONFIG_DIR}/${CONFIG}.conf")"
+  sudo wg setconf "${CONFIG}" /dev/stdin <<<"${CONFIG_CONTENT}" || die "couldn't set wireguard configuration"
+  sudo ip link set "${CONFIG}" netns "${NAMESPACE}" || die "couldn't move wg link to namespace"
+  ADDRESSES="$(grep "Address" <<<"${CONFIG_CONTENT}" | awk '{$1=$2=""; print $0}' | tr -d ' ' | sed -r 's/,/\n/g')"
+  DNSES="$(grep "DNS" <<<"${CONFIG_CONTENT}" | awk '{$1=$2=""; print $0}' | tr -d ' ' | sed -r 's/,/\n/g')"
+  while read -r ADDRESS; do
+    sudo ip -n "${NAMESPACE}" addr add $ADDRESS dev "${CONFIG}" || die "couldn't add address to link"
+  done <<<"${ADDRESSES}"
+  sudo sed 's/^/nameserver /' <<<"${DNSES}" | sudo tee > /dev/null "${NETNS_DIR}/resolv.conf" || die "couldn't set DNS"
+  sudo ip -n "${NAMESPACE}" link set "${CONFIG}" up || die "couldn't up link"
+  sudo ip -n "${NAMESPACE}" route add default dev "${CONFIG}" || die "couldn't set link as default route"
+  echo "[+] \"${CONFIG}\" is up in \"${NAMESPACE}\" namespace "
+fi

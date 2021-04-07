@@ -7,15 +7,16 @@ i1="󰥜"
 i2="󰀨"
 if [[ "$(nmcli networking connectivity)" == "full" ]]; then
   if [[ -n "$(nmcli -g TYPE c show --active | grep wireguard)" ]]; then
-    RESPONSE="$(curl -m 2 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")"
-    CONNECTED="$(sed '1q;d' <<<"${RESPONSE}")"
-    if [[ -n "${CONNECTED}" ]] && [[ "${CONNECTED}" = "true" ]]; then
-      LOCATION="$(sed '2q;d' <<<"${RESPONSE}")"
-      echo "%{F${c1}}${i1} azirevpn-${LOCATION//\"/}%{F-}"
-    else
+    # RESPONSE="$(curl -m 2 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")"
+    # CONNECTED="$(sed '1q;d' <<<"${RESPONSE}")"
+    # if [[ -n "${CONNECTED}" ]] && [[ "${CONNECTED}" = "true" ]]; then
+    #   LOCATION="$(sed '2q;d' <<<"${RESPONSE}")"
+    #   echo "%{F${c1}}${i1} azirevpn-${LOCATION//\"/}%{F-}"
+    # else
       CONNECTION="$(nmcli -g NAME c show --active | grep azirevpn)"
-      echo "%{F${c3}}${i2} ${CONNECTION}%{F-}"
-    fi
+      # echo "%{F${c3}}${i2} ${CONNECTION}%{F-}"
+      echo "%{F${c1}}${i1} ${CONNECTION}%{F-}"
+    # fi
   else
     echo "%{F${c2}}${i2} wireguard%{F-}"
   fi

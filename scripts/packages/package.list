@@ -51,7 +51,7 @@ pulseaudio
 python-pip
 python-pywal
 qbittorrent
-ranger
+ripgrep
 rofi
 rsync
 rust

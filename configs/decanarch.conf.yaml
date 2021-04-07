@@ -5,26 +5,14 @@
 
 - shell:
   -
-    command: ./scripts/trizen/install
     stdin: true
-    stdout: true
-    stderr: true
-    description: Install package manager trizen
-
-  -
-    command: ./scripts/packages/install
-    stdin: true
-    stdout: true
-    stderr: true
-    description: Install base packages
-
-  -
     stdout: true
     stderr: true
     command: ./scripts/generate_files dec
     description: Pre-process files for "decanarch" configuration
 
 - create:
+   - ~/.bin
    - ~/.cache/less
 
 - link:
@@ -38,6 +26,7 @@
     ~/.config/i3/scripts/lock: .generated/.config/i3/scripts/lock
     ~/.config/i3/scripts/power: .generated/.config/i3/scripts/power
     ~/.config/i3/scripts/scratch_term: .generated/.config/i3/scripts/scratch_term
+    ~/.config/i3/scripts/screenshot: .generated/.config/i3/scripts/screenshot
     ~/.config/mpv/mpv.conf: .generated/.config/mpv/mpv.conf
     ~/.config/nvim/init.vim: .generated/.config/nvim/init.vim
     ~/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh: .generated/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh
@@ -48,20 +37,24 @@
     ~/.config/polybar/bot: .generated/.config/polybar/bot
     ~/.config/polybar/scripts/uptime: .generated/.config/polybar/scripts/uptime
     ~/.config/polybar/scripts/vpn: .generated/.config/polybar/scripts/vpn
-    ~/.config/ranger/rc.conf: .generated/.config/ranger/rc.conf
     ~/.config/rofi/config.rasi: .generated/.config/rofi/config.rasi
-    ~/.config/wal/dunst: .generated/.config/wal/dunst
-    ~/.config/wal/lock: .generated/.config/wal/lock
-    ~/.config/wal/templates/alacritty.colors.yml: .generated/.config/wal/templates/alacritty.colors.yml
-    ~/.config/wal/templates/colors-rofi.rasi: .generated/.config/wal/templates/colors-rofi.rasi
-    ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
-    ~/.config/wal/templates/dunstrc: .generated/.config/wal/templates/dunstrc
+    ~/.config/rofi/kill.config.rasi: .generated/.config/rofi/kill.config.rasi
+    ~/.config/rofi/kill.template.rasi: .generated/.config/rofi/kill.template.rasi
+    ~/.config/wal/scripts/lock: .generated/.config/wal/scripts/lock
+    ~/.config/wal/scripts/dunst: .generated/.config/wal/scripts/dunst
     ~/.config/wal/wal-set: .generated/.config/wal/wal-set
+    ~/.config/wal/templates/alacritty.colors.yml: .generated/.config/wal/templates/alacritty.colors.yml
+    ~/.config/wal/templates/rofi.base.rasi: .generated/.config/wal/templates/rofi.base.rasi
+    ~/.config/wal/templates/rofi.kill.rasi: .generated/.config/wal/templates/rofi.kill.rasi
+    ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
     ~/.gitconfig: .generated/.gitconfig
+    ~/.scripts/myjail: .generated/.scripts/myjail
     ~/.scripts/mympv: .generated/.scripts/mympv
     ~/.scripts/mypass: .generated/.scripts/mypass
     ~/.scripts/myplug: .generated/.scripts/myplug
+    ~/.scripts/mypwgen: .generated/.scripts/mypwgen
     ~/.scripts/myvpn: .generated/.scripts/myvpn
+    ~/.scripts/myvpn-ns: .generated/.scripts/myvpn-ns
     ~/.scripts/mywal: .generated/.scripts/mywal
     ~/.xprofile: .generated/.xprofile
     ~/.zshenv: .generated/.zshenv
@@ -72,6 +65,20 @@
       recursive: true
 
 - shell:
+  -
+    command: ./scripts/trizen/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install package manager trizen
+
+  -
+    command: ./scripts/packages/install
+    stdin: true
+    stdout: true
+    stderr: true
+    description: Install base packages
+
   -
     command: ./scripts/i3-window-killer/install
     stdin: true

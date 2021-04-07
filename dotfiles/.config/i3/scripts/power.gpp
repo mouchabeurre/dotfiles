@@ -9,7 +9,7 @@ res="$(printf "$options" \
     -dmenu \
     -i \
     -p "Power" \
-    -theme-str 'mainbox { padding: 430px 800px; }')"
+    -theme-str 'mainbox { margin: 430px 800px; } element-icon { enabled: false; }')"
 clear_clips() {
   clipdel -d ".*"
 }

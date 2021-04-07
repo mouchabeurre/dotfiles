@@ -18,6 +18,7 @@ DIFF="$(comm -13 <(sort  <<<${INSTALLED_LIST}) <(sort ${PACKAGE_LIST}))"
 log "$(wc -l <<<"${DIFF}" | awk '{print $1}') packages need to be installed"
 read -p "[?] Install packages ? [y/N]: " INSTALL
 INSTALL="${INSTALL:-'N'}"
+log "> ${INSTALL}"
 [[ "${INSTALL}" != 'y' ]] && log "Skipping packages installation" && exit 0
 trizen -Sy - <<<"${DIFF}"
 log "Done installing packages"

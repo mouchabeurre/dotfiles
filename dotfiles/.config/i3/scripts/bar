@@ -5,6 +5,7 @@ for i in ${polybar_proc} ; do
     kill -9 $i
 done
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+sleep 1
 polybar top &
 sleep 1
 polybar bot &

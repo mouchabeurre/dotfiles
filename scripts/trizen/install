@@ -8,23 +8,20 @@ log() {
   echo "[#] ${1}."
 }
 
-if ! command -v trizen 2>&1 > /dev/null; then
-  read -p "[?] Install trizen ? [y/N]: " INSTALL
-  INSTALL="${INSTALL:-'N'}"
-  [[ "${INSTALL}" != 'y' ]] && log "Skipping trizen installation" && exit 0
-  log "Bootstraping trizen"
-  {
-    local CLONE_DIR="${HOME}/cloned/trizen"
-    mkdir -p "${CLONE_DIR}" || die "couldn't create cloning directory"
-    log "Installing trizen..."
-    git clone https://aur.archlinux.org/trizen.git "${CLONE_DIR}" || die "couldn't clone trizen"
-    local START="$(pwd)"
-    cd "${CLONE_DIR}" || die "cd ${CLONE_DIR}"
-    makepkg -sri
-    cd "${START}" || die "cd ${START}"
-    command -v trizen 2>&1 > /dev/null || die "trizen installation failed"
-    log "trizen successfully installed"
-  }
-else
-  log "trizen already installed"
-fi
+command -v trizen 2>&1 > /dev/null && log "trizen already installed" && exit 0
+read -p "[?] Install trizen ? [y/N]: " INSTALL
+INSTALL="${INSTALL:-'N'}"
+log "> ${INSTALL}"
+[[ "${INSTALL}" != 'y' ]] && log "Skipping trizen installation" && exit 0
+
+log "Bootstraping trizen"
+CLONE_DIR="${HOME}/.bin/trizen"
+mkdir -p "${CLONE_DIR}" || die "couldn't create cloning directory"
+log "Installing trizen..."
+git clone https://aur.archlinux.org/trizen.git "${CLONE_DIR}" || die "couldn't clone trizen"
+START="$(pwd)"
+cd "${CLONE_DIR}" || die "cd ${CLONE_DIR}"
+makepkg -sri
+cd "${START}" || die "cd ${START}"
+command -v trizen 2>&1 > /dev/null || die "trizen installation failed"
+log "trizen successfully installed"

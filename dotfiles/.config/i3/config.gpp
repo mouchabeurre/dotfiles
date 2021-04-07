@@ -3,6 +3,7 @@
 ###############################
 
 set $mod Mod4
+set $outer_gap 20
 
 ###############################
 #          APPARENCE          #
@@ -45,7 +46,7 @@ focus_follows_mouse no
 for_window [class="^.*"] border pixel 2
 # for_window [class=".*"] title_format "  %title"
 gaps inner 2
-gaps outer 20
+gaps outer $outer_gap
 smart_borders on
 smart_gaps on
 
@@ -63,11 +64,15 @@ bindsym $mod+Return exec --no-startup-id st
 bindsym $mod+Return exec --no-startup-id alacritty
 #endif
 
+# Take screenshot
+bindsym --release Print exec --no-startup-id scrot -u -q 100 '%F_%T_$wx$h.png' -e '~/.config/i3/scripts/screenshot $f'
+bindsym --release $mod+Print exec --no-startup-id scrot -s -q 100 '%F_%T_$wx$h.png' -e '~/.config/i3/scripts/screenshot $f'
+
 # Toggle scratchpad terminal
 bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/scratch_term; [instance="__scratch"] scratchpad show
 
 # Kill focused window
-bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/scripts/kill
+bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/scripts/kill -c ~/.config/rofi/kill.config.rasi -t ~/.config/rofi/kill.template.rasi -o $outer_gap -s 1
 
 # Clipboard manager
 bindsym $mod+m exec --no-startup-id clipmenu
@@ -76,7 +81,7 @@ bindsym $mod+m exec --no-startup-id clipmenu
 bindsym $mod+Shift+m exec --no-startup-id clipdel -d ".*"
 
 # Start rofi
-bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun
+bindsym $mod+d exec --no-startup-id rofi -modi drun#window -show drun
 
 # Change focus
 bindsym $mod+h focus left
@@ -251,8 +256,8 @@ mode "$mode_gaps_outer" {
 
 # Force apps into workspaces
 # Workspace 1
-assign [class="Firefox"] $ws1
-for_window[class="Firefox"] focus
+assign [class="firefox"] $ws1
+for_window[class="firefox"] focus
 
 # Specific class rules
 for_window [class="__floating"] floating enable

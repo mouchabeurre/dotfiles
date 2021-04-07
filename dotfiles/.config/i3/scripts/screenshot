@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+SSHOT="${1}"
+PROGRAM="${0##*/}"
+[[ -z "${SSHOT}" ]] && exit 0
+DEST="$(xdg-user-dir PICTURES)/screenshots"
+[[ ! -d "${DEST}" ]] && notify-send "${PROGRAM}" "${DEST} is not a valid directory" && exit 0
+NEWPATH="${DEST}/${SSHOT}"
+[[ -e "${NEWPATH}" ]] && notify-send "${PROGRAM}" "file ${NEWPATH} already exists" && exit 0
+mv "${SSHOT}" "${NEWPATH}" && notify-send -t 1000 -u low "${PROGRAM}" "${NEWPATH}"

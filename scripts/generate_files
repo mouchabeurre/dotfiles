@@ -22,7 +22,7 @@ do
   if [[ "${FILENAME}" == *.gpp ]]; then
     DEST="${PROCESSED_DIR}${PARENT#"${DOTFILES_DIR}"}/${FILENAME%.*}"
     gpp \
-      -n -U "" "" "(" "," ")" "(" ")" "#" "" \
+      -U "" "" "(" "," ")" "(" ")" "#" "" \
       -M "#" "\n" " " " " "\n" "(" ")" \
       -D__CFG="${CONFIG}" "${FILE}" > "${DEST}"
   else
@@ -32,4 +32,13 @@ do
   SHEBANG="$(head -n 1 ${DEST} | grep -E "^#\!/")"
   [[ ! -z "${SHEBANG}" ]] && chmod u+x "${DEST}"
 done < <(fd -Ht f . "${DOTFILES_DIR}")
+
+JUNK="$(fd -t f -H --changed-before 1h "" ${PROCESSED_DIR})"
+if [[ -n "${JUNK}" ]]; then
+  printf "[#] Out of sync dotfiles:\n${JUNK}\n"
+  read -p "[?] Clean leftovers ? [y/N]: " CLEAN
+  CLEAN="${CLEAN:-'N'}"
+  echo "[#] > ${CLEAN}."
+  [[ "${CLEAN}" == 'y' ]] && xargs rm <<<"${JUNK}" && echo "[+] Done cleaning dotfiles"
+fi
 echo "[+] Done pre-processing dotfiles for \"${CONFIG}\""

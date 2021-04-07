@@ -1,51 +1,37 @@
 #!/usr/bin/env bash
-
-log() {
-  echo "[#] $1."
-}
-success() {
-  echo "[+] $1."
-}
-error() {
-  echo "[!] $1."
+notify() {
+  URGENCY="${2:-low}"
+  notify-send -u ${URGENCY} "wal-set" "${1}"
 }
 
-reload_dunst() {
-  local CONFIG="${XDG_CACHE_HOME}/wal/dunstrc"
-  if command -v dunst > /dev/null 2>&1 && [[ -f "${CONFIG}" ]]; then
-    log "Reloading dunst"
-    pkill dunst && dunst -config "${CONFIG}" &
-    notify-send "wal-set" "dunst successfully reloaded"
-    success "dunst done"
-  fi
-}
-
-generate_lock_screen(){
-  log "Generating lock screen background"
-  if "${XDG_CONFIG_HOME}/wal/lock"; then
-    success "Lock screen successfully generated"
-  else
-    error "Couldn't generate lock screen"
-  fi
-}
-
-#if __CFG == arc
-rebuild_st(){
-  ("${XDG_CONFIG_HOME}/wal/st") &
-  wait $!
-  if [[ $? == 0 ]]; then
-    success "st successfully rebuilt"
-  else
-    error "Coulnd't rebuild st"
-  fi
-}
-#endif
-
+SCRIPTS_DIR="${XDG_CONFIG_HOME}/wal/scripts"
 sleep 2
-log "Executing post-update scripts"
-reload_dunst
-generate_lock_screen
+
+# dunst
+if [[ -f "${SCRIPTS_DIR}/dunst" ]]; then
+  if "${SCRIPTS_DIR}/dunst"; then
+    notify "dunst reloaded"
+  else
+    notify "dunst not reloaded" "critical"
+  fi
+fi
+
+# generate lock screen
+if [[ -f "${SCRIPTS_DIR}/lock" ]]; then
+  if "${SCRIPTS_DIR}/lock"; then
+    notify "lock screen generated"
+  else
+    notify "lock screen not generated" "critical"
+  fi
+fi
+
 #if __CFG == arc
-rebuild_st
+# rebuild st
+if [[ -f "${SCRIPTS_DIR}/st" ]]; then
+  if "${SCRIPTS_DIR}/st"; then
+    notify "st rebuilt"
+  else
+    notify "failed to rebuild st" "critical"
+  fi
+fi
 #endif
-log "Done with post-update scripts"

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#sudo -E ip netns exec vpn sudo -E -u \#$(id -u) -g \#$(id -g) "$@"
+die() {
+  echo "[!] Exiting: ${1}" >&2
+  exit 1
+}
+
+TYPE=$(fzf --prompt="Jail type: " <<EOF
+vpn
+no-net
+EOF
+)
+[[ -n "${TYPE}" ]] || exit 1
+if [[ "${TYPE}" == "vpn" ]]; then
+  NAMESPACE="vpn"
+  NAMESPACE_EXISTS="$(ip -j netns list | jq --arg NS "${NAMESPACE}" '.[]|select(.name==$NS)')"
+  ACTIVE_CONFIG="$(sudo ip -j -n vpn link show up | jq -r '.[]|select(.|length>0)|.ifname')"
+  if [[ -z "${NAMESPACE_EXISTS}" || -z "${ACTIVE_CONFIG}" ]]; then
+    echo "[#] Need to setup vpn link"
+    ~/.scripts/myvpn-ns || die "Couldn't set vpn connection up"
+    echo "[#] Done setting vpn link up"
+  fi
+  firejail --noprofile --netns="${NAMESPACE}" "$@"
+fi
+
+if [[ "${TYPE}" == "no-net" ]]; then
+  firejail --noprofile --net=none "$@"
+fi
