@@ -56,6 +56,7 @@
     ~/.scripts/myvpn: .generated/.scripts/myvpn
     ~/.scripts/myvpn-ns: .generated/.scripts/myvpn-ns
     ~/.scripts/mywal: .generated/.scripts/mywal
+    ~/.scripts/p41: .generated/.scripts/p41
     ~/.xprofile: .generated/.xprofile
     ~/.zshenv: .generated/.zshenv
     ~/.zshrc: .generated/.zshrc

@@ -114,7 +114,7 @@ element.normal.urgent, element.alternate.urgent {{
 element.normal.active, element.alternate.active {{
     text-color: @active-foreground;
     border: 1px;
-    border-color: #c99158;
+    border-color: {color4};
     background-color: transparent;
 }}
 element.selected.normal {{
@@ -130,7 +130,7 @@ element.selected.urgent {{
 }}
 element.selected.active {{
     border: 1px;
-    border-color: #c99158;
+    border-color: {color4};
     background-image: linear-gradient(#{color4.strip}50, transparent);
     background-color: transparent;
     text-color: @selected-normal-foreground;
