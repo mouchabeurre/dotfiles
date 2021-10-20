@@ -3,6 +3,7 @@ export XDG_CACHE_HOME=$HOME/.cache
 export MYBIN=$HOME/.bin
 export GOPATH=$MYBIN/go
 export CARGO_HOME=$MYBIN/cargo
+export GNUPGHOME=$HOME/.gnupg
 export PATH=$PATH:$HOME/.scripts:$CARGO_HOME/bin:$GOPATH/bin
 
 export LESSHISTFILE=$XDG_CACHE_HOME/less/lesshst
