@@ -1,5 +1,6 @@
 width = 100%
-heigth = 0
+heigth = 24
+border-bottom-size = 24
 fixed-center = true
 background = ${colors.background}
 foreground = ${colors.foreground}

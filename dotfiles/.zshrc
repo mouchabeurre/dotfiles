@@ -104,6 +104,7 @@ alias lla="ls -lhA --group-directories-first"
 alias vim=nvim
 alias git="noglob git"
 alias treea="tree -a"
+alias les="less"
 
 # file completion
 _fzf_compgen_path() {

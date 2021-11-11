@@ -7,10 +7,6 @@ anotherone = ${xrdb:color3:#CB5EAE}
 andanotherone = ${xrdb:color6:#6593B3}
 alert = ${xrdb:color1:#1D59A4}
 
-[global/wm]
-margin-top = 3
-margin-bottom = 3
-
 [bar/top]
 #if __CFG == arc
 monitor = eDP1
