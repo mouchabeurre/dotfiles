@@ -1,4 +1,40 @@
 #!/usr/bin/env bash
+PROGRAM_NAME="Status Bar Launcher"
+DEFAULT_CONFIG="${XDG_CONFIG_HOME}/polybar/config.default"
+generate_default_config() {
+  local CONFIG="${XDG_CONFIG_HOME}/wal/templates/polybar.config"
+  if [[ ! -e "${CONFIG}" ]]; then
+    notify-send -u critical "${PROGRAM_NAME}" "No mock config to generate default bar config from"
+    exit 1
+  fi
+  perl \
+   -pe "s/\{background\.strip\}/151216/g;" \
+   -pe "s/\{foreground\.strip\}/f6dad0/g;" \
+   -pe "s/\{background\}/#151216/g;" \
+   -pe "s/\{foreground\}/#f6dad0/g;" \
+   -pe "s/\{color(1|9)\}/#94354D/g;" \
+   -pe "s/\{color(2|10)\}/#B7454D/g;" \
+   -pe "s/\{color(3|11)\}/#E56257/g;" \
+   -pe "s/\{color(4|12)\}/#FE9365/g;" \
+   -pe "s/\{color(5|13)\}/#F57A84/g;" \
+   -pe "s/\{color(6|14)\}/#FDA796/g;" \
+   -pe "s/\{color(7|15)\}/#f6dad0/g;" \
+   -pe "s/\{color8\}/#ac9891/g;" \
+   -pe "s/\{\{/{/g;" \
+   -pe "s/\}\}/}/g;" \
+   "${CONFIG}" > "${DEFAULT_CONFIG}"
+    notify-send -u low "${PROGRAM_NAME}" "Successfully generated default bar config"
+}
+
 killall -q polybar
-polybar top &
-polybar bot &
+CONFIG="${XDG_CACHE_HOME}/wal/polybar.config"
+if [[ ! -e "${CONFIG}" ]]; then
+  CONFIG="${DEFAULT_CONFIG}"
+  if [[ ! -f "${DEFAULT_CONFIG}" ]]; then
+    generate_default_config
+  fi
+fi
+
+polybar -c "${CONFIG}" top &
+sleep 2
+polybar -c "${CONFIG}" bot &

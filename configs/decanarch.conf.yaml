@@ -20,6 +20,7 @@
     ~/.config/broot/conf.hjson: .generated/.config/broot/conf.hjson
     ~/.config/emptty: .generated/.config/emptty
     ~/.config/fdfind/globalignore: .generated/.config/fdfind/globalignore
+    ~/.config/git/config: .generated/.config/git/config
     ~/.config/i3/config: .generated/.config/i3/config
     ~/.config/i3/scripts/bar: .generated/.config/i3/scripts/bar
     ~/.config/i3/scripts/kill: .bin/i3-window-killer/target/release/i3-window-killer
@@ -32,22 +33,20 @@
     ~/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh: .generated/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh
     ~/.config/oh-my-zsh/custom/themes/bureau.zsh-theme: .generated/.config/oh-my-zsh/custom/themes/bureau.zsh-theme
     ~/.config/picom/picom.conf: .generated/.config/picom/picom.conf
-    ~/.config/polybar/config: .generated/.config/polybar/config
-    ~/.config/polybar/top: .generated/.config/polybar/top
-    ~/.config/polybar/bot: .generated/.config/polybar/bot
+    ~/.config/polybar/base: .generated/.config/polybar/base
     ~/.config/polybar/scripts/uptime: .generated/.config/polybar/scripts/uptime
     ~/.config/polybar/scripts/vpn: .generated/.config/polybar/scripts/vpn
     ~/.config/rofi/config.rasi: .generated/.config/rofi/config.rasi
     ~/.config/rofi/kill.config.rasi: .generated/.config/rofi/kill.config.rasi
     ~/.config/rofi/kill.template.rasi: .generated/.config/rofi/kill.template.rasi
-    ~/.config/wal/scripts/lock: .generated/.config/wal/scripts/lock
     ~/.config/wal/scripts/dunst: .generated/.config/wal/scripts/dunst
-    ~/.config/wal/wal-set: .generated/.config/wal/wal-set
+    ~/.config/wal/scripts/lock: .generated/.config/wal/scripts/lock
     ~/.config/wal/templates/alacritty.colors.yml: .generated/.config/wal/templates/alacritty.colors.yml
+    ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
+    ~/.config/wal/templates/polybar.config: .generated/.config/wal/templates/polybar.config
     ~/.config/wal/templates/rofi.base.rasi: .generated/.config/wal/templates/rofi.base.rasi
     ~/.config/wal/templates/rofi.kill.rasi: .generated/.config/wal/templates/rofi.kill.rasi
-    ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
-    ~/.gitconfig: .generated/.gitconfig
+    ~/.config/wal/wal-set: .generated/.config/wal/wal-set
     ~/.scripts/myjail: .generated/.scripts/myjail
     ~/.scripts/mympv: .generated/.scripts/mympv
     ~/.scripts/mypass: .generated/.scripts/mypass

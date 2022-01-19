@@ -2,6 +2,9 @@
   email = zidronfirefax@gmail.com
   user = mouchabeurre
 
+[init]
+  defaultBranch = master
+
 [diff]
   tool = vimdiff
 

@@ -1,19 +1,23 @@
 [colors]
-background = ${xrdb:polybg:#261527}
-foreground = ${xrdb:color7:#BC9FBA}
-primary = ${xrdb:color4:#A156A9}
-secondary = ${xrdb:color8:#7c727d}
-anotherone = ${xrdb:color3:#CB5EAE}
-andanotherone = ${xrdb:color6:#6593B3}
-alert = ${xrdb:color1:#1D59A4}
+background = #BE{background.strip}
+foreground = {foreground}
+primary = {color4}
+secondary = {color8}
+anotherone = {color3}
+andanotherone = {color6}
+alert = {color1}
 
-[bar/top]
+[bar/base]
 #if __CFG == arc
 monitor = eDP1
 #elif __CFG == dec
-monitor = HDMI-A-0
+monitor = HDMI-1
 #endif
-include-file = $XDG_CONFIG_HOME/polybar/top
+local = fr-FR.UTF-8
+include-file = $XDG_CONFIG_HOME/polybar/base
+
+[bar/top]
+inherit = bar/base
 modules-left = hostname
 modules-center = date
 #if __CFG == arc
@@ -23,18 +27,13 @@ modules-right = cpu memory filesystem volume uptime
 #endif
 
 [bar/bot]
-#if __CFG == arc
-monitor = eDP1
-#elif __CFG == dec
-monitor = HDMI-A-0
-#endif
-include-file = $XDG_CONFIG_HOME/polybar/bot
+inherit = bar/base
 modules-left = i3 i3msg
 modules-center = xwindow
 #if __CFG == arc
-modules-right = network vpn
+modules-right = wired-network vpn
 #elif __CFG == dec
-modules-right = network1 network2 vpn
+modules-right = wired-network wireless-network vpn
 #endif
 
 #if __CFG == arc
@@ -50,9 +49,9 @@ label-charging = %percentage:0\%
 label-discharging = %percentage:0\%
 label-full = %percentage:0\%
 ramp-capacity-0 = 󰂎
-ramp-capacity-0-foreground = ${colors.alert}
+ramp-capacity-0-foreground = ${{colors.alert}}
 ramp-capacity-1 = 󰁺
-ramp-capacity-1-foreground = ${colors.alert}
+ramp-capacity-1-foreground = ${{colors.alert}}
 ramp-capacity-2 = 󰁻
 ramp-capacity-3 = 󰁼
 ramp-capacity-4 = 󰁽
@@ -62,8 +61,8 @@ ramp-capacity-7 = 󰂀
 ramp-capacity-8 = 󰂁
 ramp-capacity-9 = 󰂂
 ramp-capacity-10 = 󰁹
-format-full-foreground = ${colors.primary}
-format-charging-foreground = ${colors.primary}
+format-full-foreground = ${{colors.primary}}
+format-charging-foreground = ${{colors.primary}}
 animation-charging-0 = 󰂆
 animation-charging-1 = 󰂇
 animation-charging-2 = 󰂈
@@ -78,38 +77,47 @@ animation-charging-framerate = 750
 type = internal/i3
 strip-wsnumbers = true
 enable-scroll = false
-ws-icon-0 = 1;󰎤
-ws-icon-1 = 2;󰎧
-ws-icon-2 = 3;󰎪
-ws-icon-3 = 4;󰎭
-ws-icon-4 = 5;󰎱
-ws-icon-5 = 6;󰎳
-ws-icon-6 = 7;󰎶
-ws-icon-7 = 8;󰎹
-ws-icon-8 = 9;󰎼
-ws-icon-default = 󰎣
+ws-icon-0 = 1;1
+ws-icon-1 = 2;2
+ws-icon-2 = 3;3
+ws-icon-3 = 4;4
+ws-icon-4 = 5;5
+ws-icon-5 = 6;6
+ws-icon-6 = 7;7
+ws-icon-7 = 8;8
+ws-icon-8 = 9;9
+ws-icon-default = 0
 format = <label-state>
 index-sort = true
 enable-click = true
-label-focused = %icon%
-label-focused-foreground = ${colors.primary}
+
+label-focused = "%index%"
+label-focused-foreground = {color6}
+label-focused-underline = {color6}
 label-focused-padding = 2
-label-unfocused-foreground = ${colors.secondary}
-label-unfocused = %icon%
+label-focused-font = 3
+
+label-unfocused-foreground = ${{colors.secondary}}
+label-unfocused = %index%
 label-unfocused-padding = 2
-label-urgent = %icon%
-label-urgent-foreground = ${colors.alert}
+; label-unfocused-font = 4
+
+label-urgent = %index%
+label-urgent-foreground = ${{colors.alert}}
 label-urgent-padding = 2
-label-visible = %name%
+; label-urgent-font = 4
+
+label-visible = %index%
 label-visible-padding = 2
-;label-focused-underline = ${colors.secondary}
+; label-separator = |
 
 [module/i3msg]
 type = internal/i3
 format = <label-state><label-mode>
 label-mode = %mode%
-label-mode-padding = 3
-label-mode-background = ${colors.alert}
+label-mode-padding = 1
+label-mode-background = ${{colors.alert}}
+label-mode-font = 4
 label-focused =
 label-unfocused =
 label-urgent =
@@ -117,51 +125,44 @@ label-visible =
 
 [module/date]
 type = internal/date
+format = <label>
+format-foreground = ${{colors.foreground}}
 time = %H:%M
 time-alt = %A %d.%m.%y %H:%M:%S
 label = %time%
-format = <label>
-format-foreground = ${colors.foreground}
 
-#if __CFG == arc
-[module/network]
+[module/wireless-network]
 type = internal/network
+#if __CFG == arc
 interface = wlp2s0
 interval = 2
-format-connected-foreground = ${colors.foreground}
-format-disconnected-foreground = ${colors.anotherone}
-format-connected = <label-connected> <ramp-signal>
+#elif __CFG == dec
+interface = wlx0024a59cbb3e
+interval = 1
+#endif
+accumulate-stats = true
+format-connected = [%{{F{color8}}}<ramp-signal>%{{F-}} <label-connected>]
 format-disconnected = <label-disconnected>
-label-connected = %{T2}󰅃%upspeed% 󰅀%downspeed%%{T-} %essid%
+label-connected = "%{{O-5}}%{{F{color8}}}󰅃%{{F-}}%upspeed:5:5% %{{F{color8}}}󰅀%{{F-}}%downspeed:5:5% %essid%"
 label-disconnected = 󰤮
 ramp-signal-0 = 󰤯
 ramp-signal-1 = 󰤟
 ramp-signal-2 = 󰤢
 ramp-signal-3 = 󰤥
 ramp-signal-4 = 󰤨
-#elif __CFG == dec
-[module/network1]
+format-connected-foreground = ${{colors.foreground}}
+format-disconnected-foreground = ${{colors.anotherone}}
+
+#if __CFG == dec
+[module/wired-network]
 type = internal/network
 interval = 1
 accumulate-stats = true
-format-connected-foreground = ${colors.foreground}
-format-disconnected-foreground = ${colors.anotherone}
 interface = enp34s0
-format-connected = <label-connected>
-format-disconnected = <label-disconnected>
-label-connected = %{T2}󰅃%upspeed%%{O7}󰅀%downspeed%%{T-}%{O7}󰈁
-label-disconnected = 󰈂
-
-[module/network2]
-type = internal/network
-interval = 1
-format-connected-foreground = ${colors.foreground}
-format-disconnected-foreground = ${colors.anotherone}
-interface = wlx0024a59cbb3e
-format-connected = <label-connected>
-format-disconnected = <label-disconnected>
-label-connected = 
-label-disconnected = 
+format-connected = [%{{F{color8}}}󰈁%{{F-}} <label-connected>]
+format-disconnected = [%{{F{color5}}}󰈂%{{F-}}]
+label-connected = "%{{O-5}}%{{F{color8}}}󰅃%{{F-}}%upspeed:5:5% %{{F{color8}}}󰅀%{{F-}}%downspeed:5:5%"
+; label-disconnected = 󰈂
 #endif
 
 [module/vpn]
@@ -171,67 +172,69 @@ interval = 5
 #elif __CFG == dec
 interval = 3
 #endif
+format = [<label>]
+label = "%output%"
 exec = $XDG_CONFIG_HOME/polybar/scripts/vpn
 ;exec-if = ping -c 1 1.1.1.1
-label = "%output%"
 
 [module/uptime]
 type = custom/script
 interval = 120
-format-prefix = "󰔉"
-format-prefix-foreground = ${colors.primary}
-format-foreground = ${colors.foreground}
-exec = ~/.config/polybar/scripts/uptime
+format = [%{{F{color8}}}󰔉%{{F-}} <label>]
+label = "%output%"
+exec = $XDG_CONFIG_HOME/polybar/scripts/uptime
 
 [module/hostname]
 type = custom/script
 interval = 480
 format = <label>
+format-padding = 1
+format-foreground = {color6}
 format-prefix = "󰆦 "
-format-prefix-foreground = ${colors.primary}
-format-padding = 0
-exec = echo "$(uname -n)"
+format-prefix-foreground = {color6}
+label = "%output%"
+label-font = 4
+exec = uname -n
 
 #if __CFG == arc
 [module/bluetooth]
 type = custom/script
 interval = 5
-exec = $XDG_CONFIG_HOME/polybar/scripts/bluetooth
+format = [<label>]
 label = "%output%"
+exec = $XDG_CONFIG_HOME/polybar/scripts/bluetooth
 #endif
 
 [module/volume]
 type = internal/alsa
 master-mixer = Master
-format-volume = <ramp-volume> <label-volume>
-format-muted = <label-muted>
-label-volume = %percentage%
+format-volume = [%{{F{color8}}}<ramp-volume>%{{F-}} <label-volume>]
+format-muted = [<label-muted>]
+label-volume = "%percentage%"
 ramp-volume-0 = 󰕿
 ramp-volume-1 = 󰖀
 ramp-volume-2 = 󰕾
-label-muted = 󰖁
+label-muted = "%{{F{color5}}}󰖁%{{F-}}"
 
 [module/xwindow]
 type = internal/xwindow
+format = <label>
 #if __CFG == arc
-label = %title:0:40: 󰑀%
+label = %title:0:50: 󰑀%
 #elif __CFG == dec
 label = %title:0:70: 󰑀%
 #endif
-label-foreground = ${colors.foreground}
 label-padding = 1
 
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = "󰍛"
-label = %{O5}%percentage%
+label = "[%{{F{color8}}}󰍛%{{F-}} %percentage:2%]"
 
 [module/memory]
 type = internal/memory
 interval = 3
-format-prefix = "󰆼"
-label = %{O5}%percentage_used%
+label = "[%{{F{color8}}}󰆼%{{F-}} %percentage_used:2%]"
 
 [module/filesystem]
 type = internal/fs
@@ -244,7 +247,7 @@ mount-2 = /var
 #elif __CFG == dec
 mount-1 = /storage
 #endif
-label-mounted = 󰮌%{O5}%mountpoint%:%percentage_used%
+label-mounted = "[%{{F{color8}}}󰮌%{{F-}}%mountpoint%:%percentage_used%]"
 label-unmounted =
 
 ; vim:ft=dosini

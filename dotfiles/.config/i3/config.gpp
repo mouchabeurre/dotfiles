@@ -3,7 +3,8 @@
 ###############################
 
 set $mod Mod4
-set $outer_gap 20
+set $outer_gap 0
+set $inner_gap 0
 
 ###############################
 #          APPARENCE          #
@@ -45,7 +46,7 @@ focus_follows_mouse no
 # i3-gaps options
 for_window [class="^.*"] border pixel 2
 # for_window [class=".*"] title_format "  %title"
-gaps inner 2
+gaps inner $inner_gap
 gaps outer $outer_gap
 smart_borders on
 smart_gaps on
@@ -78,7 +79,7 @@ bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/scripts/kill -c ~/.config
 bindsym $mod+m exec --no-startup-id clipmenu
 
 # Clear saved clips
-bindsym $mod+Shift+m exec --no-startup-id clipdel -d ".*"
+bindsym $mod+Shift+m exec --no-startup-id clipdel -d ".*" && notify-send -u low "Clipboard Manager" "Cleared clip history"
 
 # Start rofi
 bindsym $mod+d exec --no-startup-id rofi -modi drun#window -show drun
@@ -136,7 +137,9 @@ bindsym $mod+Shift+p focus parent
 # Resize window (you can also use the mouse for that)
 set $step1 1 px or 1 ppt
 set $step10 10 px or 10 ppt
-mode "resize" {
+set $mode_resize Resize
+bindsym $mod+r mode "$mode_resize"
+mode "$mode_resize" {
 # step10 steps
         bindsym h resize shrink width $step10
         bindsym j resize shrink height $step10
@@ -152,7 +155,6 @@ mode "resize" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
 
 # Reload the configuration file
 bindsym $mod+Shift+c reload
@@ -169,7 +171,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 2%+
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 2%-
 bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
 bindsym Shift+XF86AudioLowerVolume exec --no-startup-id amixer set Master 18%
-bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id amixer set Master 100%
+bindsym $mod+Shift+XF86AudioRaiseVolume exec --no-startup-id amixer set Master 100%
 
 #if __CFG == arc
 # Sreen brightness controls
@@ -220,8 +222,6 @@ bindsym $mod+Shift+ccedilla move container to workspace 9
 bindsym $mod+Shift+agrave move container to workspace 10
 
 # workspace specific default rules
-workspace $ws1 gaps inner 0
-workspace $ws1 gaps outer 0
 
 # Gaps setter
 set $mode_gaps_outer Outer Gaps
@@ -236,7 +236,7 @@ mode "$mode_gaps_inner" {
 
         bindsym Shift+l gaps inner all plus 5
         bindsym Shift+h gaps inner all minus 5
-        bindsym Shift+0     gaps inner all set 0
+        bindsym Shift+0 gaps inner all set 0
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -244,11 +244,11 @@ mode "$mode_gaps_inner" {
 mode "$mode_gaps_outer" {
         bindsym l gaps outer current plus 5
         bindsym h gaps outer current minus 5
-        bindsym 0     gaps outer current set 0
+        bindsym 0 gaps outer current set 0
 
         bindsym Shift+l gaps outer all plus 5
         bindsym Shift+h gaps outer all minus 5
-        bindsym Shift+0     gaps outer all set 0
+        bindsym Shift+0 gaps outer all set 0
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -263,7 +263,7 @@ for_window[class="firefox"] focus
 for_window [class="__floating"] floating enable
 
 # Bar
-exec_always --no-startup-id ~/.config/i3/scripts/bar
+exec_always --no-startup-id sleep 1 && ~/.config/i3/scripts/bar
 
 ###############################
 #            MISC             #
@@ -274,7 +274,7 @@ exec --no-startup-id xset r rate 200 30
 
 # Start additional programs
 # Compton
-exec --no-startup-id picom
+exec --no-startup-id picom --experimental-backends
 # Drop-down terminal
 exec --no-startup-id sleep 1; ~/.config/i3/scripts/scratch_term
 for_window [instance="__scratch"] floating toggle move scratchpad

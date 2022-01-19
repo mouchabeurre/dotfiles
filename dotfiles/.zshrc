@@ -89,6 +89,92 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
+sudoify() {
+  if [[ -z $BUFFER ]]; then
+    zle set-local-history 1
+    zle up-history
+    zle set-local-history 0
+  fi
+  if ! [[ $BUFFER =~ ^\ ?(sudo|_)\ .* ]]; then
+    if [[ $BUFFER == \ * ]]; then
+      BUFFER=" _$BUFFER"
+    else
+      BUFFER="_ $BUFFER"
+    fi
+    CURSOR=$(( CURSOR+2 ))
+  fi
+}
+zle -N sudoify
+
+_surroundify() {
+  LEFT_CHAR="$1"
+  RIGHT_CHAR="$2"
+  [[ -z $LEFT_CHAR || -z $RIGHT_CHAR ]] && return
+  LBUFFER="$(perl -pe "s/(.*?)(([;,|\({\[\"\']+|\ )|$)/\1${LEFT_CHAR:q}\2/" <(rev <<<"$LBUFFER") | rev)"
+  RBUFFER="$(perl -pe "s/(.*?)(([;,|\)}\]\"\']+|\ )|$)/\1${RIGHT_CHAR:q}\2/" <<<"$RBUFFER")"
+}
+
+singlequotify() {
+  _surroundify "'" "'"
+  zle redisplay
+}
+zle -N singlequotify
+
+doublequotify() {
+  _surroundify '"' '"'
+  zle redisplay
+}
+zle -N doublequotify
+
+parenthesify() {
+  _surroundify '(' ')'
+  zle redisplay
+}
+zle -N parenthesify
+
+curlybraceify() {
+  _surroundify '{' '}'
+  zle redisplay
+}
+zle -N curlybraceify
+
+curlybraceify() {
+  _surroundify '{' '}'
+  zle redisplay
+}
+zle -N curlybraceify
+
+squarebracketify() {
+  _surroundify '[' ']'
+  zle redisplay
+}
+zle -N squarebracketify
+
+up-line-or-local-history() {
+  zle set-local-history 1
+  zle up-line-or-history
+  zle set-local-history 0
+}
+zle -N up-line-or-local-history
+
+down-line-or-local-history() {
+  zle set-local-history 1
+  zle down-line-or-history
+  zle set-local-history 0
+}
+zle -N down-line-or-local-history
+
+bindkey '^[OA' up-line-or-local-history    # Cursor up
+bindkey '^[OB' down-line-or-local-history  # Cursor down
+bindkey '^[[1;5A' up-line-or-history     # [CTRL] + Cursor up
+bindkey '^[[1;5B' down-line-or-history   # [CTRL] + Cursor down
+bindkey '^xs' sudoify
+bindkey "^x'" singlequotify
+bindkey '^x"' doublequotify
+bindkey '^x(' parenthesify
+bindkey '^x{' curlybraceify
+bindkey '^x[' squarebracketify
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.

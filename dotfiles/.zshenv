@@ -14,6 +14,7 @@ export CM_LAUNCHER=rofi
 export ASDF_DIR=$MYBIN/asdf
 export ASDF_CONFIG_FILE=$XDG_CACHE_HOME/asdf/asdfrc
 export ASDF_DATA_DIR=$ASDF_DIR
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export MOUNT0=/mnt/$USER/mount0
 export MOUNT1=/mnt/$USER/mount1
