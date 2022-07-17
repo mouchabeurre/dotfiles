@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-CONNECTIONS="$(nmcli -g NAME,TYPE,ACTIVE connection show)"
-ACTIVE="$(rg '.+:wireguard:yes$' <<<"${CONNECTIONS}")"
-PEERS="$(rg '.+:wireguard:(yes|no)$' <<<"${CONNECTIONS}")"
-PEER=$(fzf --prompt="Peer: " <<<"${PEERS}\nNone")
+CONNECTIONS="$(nmcli -g name,type,active connection show)"
+ACTIVE="$(perl -nle '/(.+):wireguard:yes$/ && print $1' <<<"${CONNECTIONS}")"
+PEERS="$(perl -nle '/(.+):wireguard:(no|yes)$/ && print $1' <<<"${CONNECTIONS}")"
+if [[ -n "${ACTIVE}" ]]; then
+  PEERS="$(printf "${PEERS}\nNone")"
+fi
+PEER=$(fzf --prompt="Peer: " <<<"${PEERS}")
 if [[ -n ${PEER} ]]; then
   if [[ -n "${ACTIVE}" || ${PEER} == "None" ]]; then
     echo "[#] Closing ${ACTIVE}"
