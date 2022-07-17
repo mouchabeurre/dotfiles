@@ -1,25 +1,24 @@
 #!/usr/bin/env bash
+I1="${1}"
+I2="${2}"
+I3="${3}"
+C1="${4}"
+C2="${5}"
+C3="${6}"
 
-c1=$(sed '16q;d' ~/.cache/wal/colors)
-c2=$(sed '4q;d' ~/.cache/wal/colors)
-c3=$(sed '15q;d' ~/.cache/wal/colors)
-i1="󰥜"
-i2="󰀨"
 if [[ "$(nmcli networking connectivity)" == "full" ]]; then
-  if [[ -n "$(nmcli -g TYPE c show --active | grep wireguard)" ]]; then
-    # RESPONSE="$(curl -m 2 -s "https://api.azirevpn.com/v1/check" | jq ".connected, .location")"
-    # CONNECTED="$(sed '1q;d' <<<"${RESPONSE}")"
-    # if [[ -n "${CONNECTED}" ]] && [[ "${CONNECTED}" = "true" ]]; then
-    #   LOCATION="$(sed '2q;d' <<<"${RESPONSE}")"
-    #   echo "%{F${c1}}${i1} azirevpn-${LOCATION//\"/}%{F-}"
-    # else
-      CONNECTION="$(nmcli -g NAME c show --active | grep azirevpn)"
-      # echo "%{F${c3}}${i2} ${CONNECTION}%{F-}"
-      echo "%{F${c1}}${i1} ${CONNECTION}%{F-}"
-    # fi
+  CONNECTIONS="$(nmcli -g NAME,TYPE,ACTIVE connection show)"
+  ACTIVE="$(rg '.+:wireguard:yes$' <<<"${CONNECTIONS}")"
+  if [[ -n "${ACTIVE}" ]]; then
+    if [[ -n "$(rg '^azirevpn' <<< ${ACTIVE})" ]]; then
+      NAME="$(perl -ne '/^azirevpn-(.+?):/ && print $1' <<<"${ACTIVE}")"
+    else
+      NAME="$(perl -ne '/^(.+?):/ && print $1' <<<"${ACTIVE}")"
+    fi
+    echo "%{F${C2}}${I1}%{F-} %{F${C1}}${NAME}%{F-}"
   else
-    echo "%{F${c2}}${i2} wireguard%{F-}"
+    echo "%{F${C3}}${I2}%{F-}"
   fi
 else
-  echo "%{F${c2}}${i2} connectivity%{F-}"
+  echo "%{F${C3}}${I3}%{F-}"
 fi

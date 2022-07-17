@@ -41,6 +41,9 @@ ZSH_THEME="bureau"
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
 
+# Don't persist lines NOT starting by a space
+HISTORY_IGNORE='[^[:space:]]*'
+
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
@@ -89,7 +92,9 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
+
 sudoify() {
+  emulate -L zsh
   if [[ -z $BUFFER ]]; then
     zle set-local-history 1
     zle up-history
@@ -174,6 +179,12 @@ bindkey '^x"' doublequotify
 bindkey '^x(' parenthesify
 bindkey '^x{' curlybraceify
 bindkey '^x[' squarebracketify
+
+# enable options
+
+# disableoptions
+# unsetopt sharehistory
+unsetopt histignorespace
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh

@@ -36,5 +36,3 @@ if [[ ! -e "${CONFIG}" ]]; then
 fi
 
 polybar -c "${CONFIG}" top &
-sleep 2
-polybar -c "${CONFIG}" bot &

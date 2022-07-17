@@ -34,6 +34,7 @@
     ~/.config/oh-my-zsh/custom/themes/bureau.zsh-theme: .generated/.config/oh-my-zsh/custom/themes/bureau.zsh-theme
     ~/.config/picom/picom.conf: .generated/.config/picom/picom.conf
     ~/.config/polybar/base: .generated/.config/polybar/base
+    ~/.config/polybar/scripts/hostname: .generated/.config/polybar/scripts/hostname
     ~/.config/polybar/scripts/uptime: .generated/.config/polybar/scripts/uptime
     ~/.config/polybar/scripts/vpn: .generated/.config/polybar/scripts/vpn
     ~/.config/rofi/config.rasi: .generated/.config/rofi/config.rasi

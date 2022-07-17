@@ -11,11 +11,6 @@ export EDITOR=nvim
 export GIT_EDITOR=nvim
 export FZF_DEFAULT_OPTS="--height 40% --reverse --no-bold"
 export CM_LAUNCHER=rofi
-export ASDF_DIR=$MYBIN/asdf
 export ASDF_CONFIG_FILE=$XDG_CACHE_HOME/asdf/asdfrc
-export ASDF_DATA_DIR=$ASDF_DIR
+export ASDF_DATA_DIR=$MYBIN/asdf
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-export MOUNT0=/mnt/$USER/mount0
-export MOUNT1=/mnt/$USER/mount1
-export MOUNT2=/mnt/$USER/mount2

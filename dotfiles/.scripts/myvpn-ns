@@ -15,7 +15,8 @@ if [[ -z "${NAMESPACE_EXISTS}" ]]; then
   echo "[+] Creating namespace \"${NAMESPACE}\""
   sudo ip netns add "${NAMESPACE}" || die "couldn't create namespace"
   if [[ ! -e "${NETNS_DIR}/nsswitch.conf" ]]; then
-    sudo sed -r '/^hosts/ s/\[!UNAVAIL=return\]\ //' /etc/nsswitch.conf > "${NETNS_DIR}/nsswitch.conf" || die "couldn't copy nsswitch"
+    sed -r '/^hosts/ s/\[!UNAVAIL=return\]\ //' /etc/nsswitch.conf \
+      | sudo tee > /dev/null "${NETNS_DIR}/nsswitch.conf" || die "couldn't copy nsswitch"
   fi
   echo "[+] namespace \"${NAMESPACE}\" created"
 fi
@@ -46,7 +47,8 @@ if [[ "${CONFIG}" != "${NONE_CONFIG}" ]]; then
   while read -r ADDRESS; do
     sudo ip -n "${NAMESPACE}" addr add $ADDRESS dev "${CONFIG}" || die "couldn't add address to link"
   done <<<"${ADDRESSES}"
-  sudo sed 's/^/nameserver /' <<<"${DNSES}" | sudo tee > /dev/null "${NETNS_DIR}/resolv.conf" || die "couldn't set DNS"
+  sed 's/^/nameserver /' <<<"${DNSES}" \
+    | sudo tee > /dev/null "${NETNS_DIR}/resolv.conf" || die "couldn't set DNS"
   sudo ip -n "${NAMESPACE}" link set "${CONFIG}" up || die "couldn't up link"
   sudo ip -n "${NAMESPACE}" route add default dev "${CONFIG}" || die "couldn't set link as default route"
   echo "[+] \"${CONFIG}\" is up in \"${NAMESPACE}\" namespace "

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-ACTIVE=$(nmcli -g NAME c show --active | grep azirevpn)
-PEERS="$(nmcli -g NAME c show | grep azirevpn)"
-PEER=$(printf "${PEERS}\nNone" \
-  | fzf --prompt="Peer: ")
+CONNECTIONS="$(nmcli -g NAME,TYPE,ACTIVE connection show)"
+ACTIVE="$(rg '.+:wireguard:yes$' <<<"${CONNECTIONS}")"
+PEERS="$(rg '.+:wireguard:(yes|no)$' <<<"${CONNECTIONS}")"
+PEER=$(fzf --prompt="Peer: " <<<"${PEERS}\nNone")
 if [[ -n ${PEER} ]]; then
   if [[ -n "${ACTIVE}" || ${PEER} == "None" ]]; then
     echo "[#] Closing ${ACTIVE}"
