@@ -26,8 +26,8 @@
     ~/.config/i3/scripts/kill: .bin/i3-window-killer/target/release/i3-window-killer
     ~/.config/i3/scripts/lock: .generated/.config/i3/scripts/lock
     ~/.config/i3/scripts/power: .generated/.config/i3/scripts/power
-    ~/.config/i3/scripts/scratch_term: .generated/.config/i3/scripts/scratch_term
     ~/.config/i3/scripts/screenshot: .generated/.config/i3/scripts/screenshot
+    ~/.config/kitty/kitty.conf: .generated/.config/kitty/kitty.conf
     ~/.config/mpv/mpv.conf: .generated/.config/mpv/mpv.conf
     ~/.config/nvim/init.vim: .generated/.config/nvim/init.vim
     ~/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh: .generated/.config/oh-my-zsh/custom/plugins/asdf/asdf.plugin.zsh

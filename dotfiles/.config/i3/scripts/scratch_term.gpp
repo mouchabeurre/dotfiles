@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-instance=$(pgrep -f __scratch)
-if [[ -z $instance ]]; then
-#if __CFG == arc
-  st -g 130x40 -n __scratch &
-#elif __CFG == dec
-  alacritty --class __scratch -o window.dimensions.columns=130 window.dimensions.lines=40 &
-#endif
-fi

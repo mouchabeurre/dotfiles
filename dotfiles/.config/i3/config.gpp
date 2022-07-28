@@ -59,18 +59,14 @@ smart_gaps on
 floating_modifier $mod
 
 # Start a terminal
-#if __CFG == arc
-bindsym $mod+Return exec --no-startup-id st
-#elif __CFG == dec
-bindsym $mod+Return exec --no-startup-id alacritty
-#endif
+bindsym $mod+Return exec --no-startup-id kitty
 
 # Take screenshot
 bindsym --release Print exec --no-startup-id scrot -u -q 100 '%F_%T_$wx$h.png' -e '~/.config/i3/scripts/screenshot $f'
 bindsym --release $mod+Print exec --no-startup-id scrot -s -q 100 '%F_%T_$wx$h.png' -e '~/.config/i3/scripts/screenshot $f'
 
 # Toggle scratchpad terminal
-bindsym $mod+F1 exec --no-startup-id ~/.config/i3/scripts/scratch_term; [instance="__scratch"] scratchpad show
+bindsym $mod+F1 nop scratchterm
 
 # Kill focused window
 bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/scripts/kill -c ~/.config/rofi/kill.config.rasi -t ~/.config/rofi/kill.template.rasi -o $outer_gap -s 1
@@ -276,7 +272,6 @@ exec --no-startup-id xset r rate 200 30
 # Compton
 exec --no-startup-id picom --experimental-backends
 # Drop-down terminal
-exec --no-startup-id sleep 1; ~/.config/i3/scripts/scratch_term
-for_window [instance="__scratch"] floating toggle move scratchpad
+exec_always --no-startup-id kitti3 -n scratchterm -p CC -s 0.7 0.7
 # Notification demon
 exec --no-startup-id dunst -config ~/.cache/wal/dunstrc

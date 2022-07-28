@@ -8,58 +8,46 @@ log() {
   echo "[#] ${1}."
 }
 
-read -p "[?] Install wireguard interfaces for azirevpn ? [y/N]: " INSTALL
-INSTALL="${INSTALL:-'N'}"
-log "> ${INSTALL}"
-[[ "${INSTALL}" != 'y' ]] && log "Skipping interfaces installation" && exit 0
-
 WIREGUARD_CONFIGS_DIR="/etc/wireguard"
-if [[ ! -z "$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)" ]]; then
-  log "wireguard interfaces already generated"
+read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " GENERATE
+GENERATE="${GENERATE:-'N'}"
+log "> ${GENERATE}"
+if [[ "${GENERATE}" != 'y' ]]; then
+  log "Skipping interfaces generation" && exit 0
 else
-  read -p "[?] Generate wireguard interfaces for azirevpn ? [y/N]: " GENERATE
-  GENERATE="${GENERATE:-'N'}"
-  log "> ${GENERATE}"
-  if [[ "${GENERATE}" != 'y' ]]; then
-    log "Skipping interfaces generation"
-  else
-    BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    cd "${BASEDIR}" || die "cd ${BASEDIR}"
-    ./_install || die "couldn't generate configurations"
-    log "wireguard interfaces successfully generated"
-  fi
+  BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  cd "${BASEDIR}" || die "cd ${BASEDIR}"
+  #./_install || die "couldn't generate configurations"
+  log "wireguard interfaces successfully generated"
 fi
 
-CONFIGS="$(sudo ls -A ${WIREGUARD_CONFIGS_DIR} | grep azirevpn)"
-[[ -z "${CONFIGS}" ]] && log "No interface to import" && exit 0
-CONNECTIONS="$(nmcli -g NAME c show | grep azirevpn | awk '{print $1}')"
-ACTIVE_CONNECTION="$(nmcli -g UUID c show --active | grep azirevpn)"
+CONFIGS="$(fd -t f -e conf --changed-within 10min "azirevpn" "${WIREGUARD_CONFIGS_DIR}" -x echo {/})"
+[[ -z "${CONFIGS}" ]] && log "No new interface to import" && exit 0
+CONNECTIONS="$(nmcli -g name c show | rg azirevpn)"
+ACTIVE_CONNECTION="$(nmcli -g UUID c show --active | rg azirevpn)"
 log "Importing new interfaces to Network Manager"
-if [[ ! -z "${ACTIVE_CONNECTION}" ]]; then
+if [[ -n "${ACTIVE_CONNECTION}" ]]; then
   log "Disconnecting \"${ACTIVE_CONNECTION}\""
   nmcli c down "${ACTIVE_CONNECTION}"
+  nmcli networking off
 fi
 for CONFIG in ${CONFIGS}
 do
   CONFIG_NAME="$(basename ${CONFIG} .conf)"
-  EXISTS=0
   for CONNECTION in ${CONNECTIONS}
   do
     if [[ "${CONNECTION}" == "${CONFIG_NAME}" ]]; then
-      EXISTS=1
+      nmcli c delete "${CONFIG_NAME}"
       break
     fi
   done
-  if [[ ${EXISTS} -eq 0 ]]; then
-    log "Importing ${CONFIG_NAME}"
-    sudo nmcli c import type wireguard file "${WIREGUARD_CONFIGS_DIR}/${CONFIG}"
-    nmcli c down "${CONFIG_NAME}"
-    nmcli c modify "${CONFIG_NAME}" autoconnect no
-  else
-    log "\"${CONFIG_NAME}\" already imported, skipping"
-  fi
+  log "Importing ${CONFIG_NAME}"
+  sudo nmcli c import type wireguard file "${WIREGUARD_CONFIGS_DIR}/${CONFIG}"
+  nmcli c down "${CONFIG_NAME}"
+  nmcli c modify "${CONFIG_NAME}" autoconnect no
 done
-if [[ ! -z "${ACTIVE_CONNECTION}" ]]; then
+if [[ -n "${ACTIVE_CONNECTION}" ]]; then
+  nmcli networking on
   log "Reconnecting \"${ACTIVE_CONNECTION}\""
   nmcli c up "${ACTIVE_CONNECTION}"
 fi
