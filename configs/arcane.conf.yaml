@@ -41,7 +41,6 @@
     ~/.config/rofi/kill.template.rasi: .generated/.config/rofi/kill.template.rasi
     ~/.config/wal/scripts/dunst: .generated/.config/wal/scripts/dunst
     ~/.config/wal/scripts/lock: .generated/.config/wal/scripts/lock
-    ~/.config/wal/scripts/st: .generated/.config/wal/scripts/st
     ~/.config/wal/templates/colors.Xresources: .generated/.config/wal/templates/colors.Xresources
     ~/.config/wal/templates/polybar.config: .generated/.config/wal/templates/polybar.config
     ~/.config/wal/templates/rofi.base.rasi: .generated/.config/wal/templates/rofi.base.rasi

@@ -24,14 +24,3 @@ if [[ -f "${SCRIPTS_DIR}/lock" ]]; then
     notify "lock screen not generated" "critical"
   fi
 fi
-
-#if __CFG == arc
-# rebuild st
-if [[ -f "${SCRIPTS_DIR}/st" ]]; then
-  if "${SCRIPTS_DIR}/st"; then
-    notify "st rebuilt"
-  else
-    notify "failed to rebuild st" "critical"
-  fi
-fi
-#endif

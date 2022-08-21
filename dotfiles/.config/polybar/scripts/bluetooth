@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-c1=$(sed '16q;d' "$XDG_CACHE_HOME/wal/colors")
-c2=$(sed '4q;d' "$XDG_CACHE_HOME/wal/colors")
-i1="󰂯"
-i2="󰂲"
-bstatus="$(systemctl is-active bluetooth.service)"
-if [[ $bstatus == "active" ]]; then
-  echo "%{F$c1}$i1%{F-}"
+I1="${1}"
+I2="${2}"
+C1="${3}"
+C2="${4}"
+BT_STATUS="$(systemctl is-active bluetooth.service)"
+if [[ ${BT_STATUS} == "active" ]]; then
+  echo "%{F$C2}$I1%{F-}"
 else
-  echo "%{F$c2}$i2%{F-}"
+  echo "%{F$C1}$I2%{F-}"
 fi
