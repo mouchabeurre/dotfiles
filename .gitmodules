@@ -8,4 +8,4 @@
   ignore = all
 [submodule "dotfiles/.config/nvim"]
 	path = dotfiles/.config/nvim
-	url = https://github.com/shaunsingh/nyoom.nvim.git
+	url = https://github.com/mouchabeurre/nyoom.nvim.git

@@ -31,9 +31,9 @@ do
   fi
   SHEBANG="$(head -n 1 ${DEST} | grep -E "^#\!/")"
   [[ ! -z "${SHEBANG}" ]] && chmod u+x "${DEST}"
-done < <(fd -Ht f . "${DOTFILES_DIR}")
+done < <(fd --no-ignore-vcs -Ht f "" "${DOTFILES_DIR}")
 
-JUNK="$(fd -t f -H --changed-before 1h "" ${PROCESSED_DIR})"
+JUNK="$(fd -Ht f --changed-before 5m "" ${PROCESSED_DIR})"
 if [[ -n "${JUNK}" ]]; then
   printf "[#] Out of sync dotfiles:\n${JUNK}\n"
   read -p "[?] Clean leftovers ? [y/N]: " CLEAN

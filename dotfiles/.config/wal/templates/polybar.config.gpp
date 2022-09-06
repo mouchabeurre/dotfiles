@@ -204,8 +204,7 @@ format-background = #4e{color6.strip}
 #endif
 
 [module/volume]
-type = internal/alsa
-master-mixer = Master
+type = internal/pulseaudio
 label-volume = %percentage%
 label-muted = 󰖁
 ramp-volume-0 = 󰕿
