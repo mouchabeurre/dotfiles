@@ -8,19 +8,30 @@ fi
 PEER=$(fzf --prompt="Peer: " <<<"${PEERS}")
 if [[ -n ${PEER} ]]; then
   if [[ -n "${ACTIVE}" || ${PEER} == "None" ]]; then
-    echo "[#] Closing ${ACTIVE}"
+    echo "[#] Closing interface ${ACTIVE}"
     if nmcli c down "${ACTIVE}"; then
-      echo "[+] Closed ${ACTIVE}"
+      echo "[+] Closed interface ${ACTIVE}"
     else
-      echo "[!] Couldn't close ${ACTIVE}"
+      echo "[!] Couldn't close interface ${ACTIVE}"
     fi
   fi
   if [[ "${PEER}" != "None" ]]; then
-    echo "[#] Opening ${PEER}"
+    echo "[#] Opening interface ${PEER}"
     if nmcli c up "${PEER}"; then
-      echo "[+] Opened ${PEER}"
+      echo "[+] Opened interface ${PEER}"
+      if rg "azirevpn" <<<"${PEER}" &> /dev/null; then
+        QUERY="$(curl -s "https://api.azirevpn.com/v1/check")"
+        CONNECTED="$(jq -r '.connected' <<<"${QUERY}")"
+        IP="$(jq -r '.ip' <<<"${QUERY}")"
+        LOCATION="$(jq -r '.location' <<<"${QUERY}")"
+        if [[ "${CONNECTED}" == "true" ]]; then
+          echo "[+] Connected to ${LOCATION} as ${IP}"
+        else
+          echo "[!] Couldn't reach ${LOCATION}"
+        fi
+      fi
     else
-      echo "[!] Couldn't open ${PEER}"
+      echo "[!] Couldn't open interface ${PEER}"
     fi
   fi
 fi
