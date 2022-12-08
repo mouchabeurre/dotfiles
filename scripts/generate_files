@@ -29,7 +29,7 @@ do
     DEST="${PROCESSED_DIR}${PARENT#"${DOTFILES_DIR}"}/${FILENAME}"
     cp "${FILE}" "${DEST}"
   fi
-  SHEBANG="$(head -n 1 ${DEST} | grep -E "^#\!/")"
+  SHEBANG="$(head -n 1 ${DEST} | rg "^#!/")"
   [[ ! -z "${SHEBANG}" ]] && chmod u+x "${DEST}"
 done < <(fd --no-ignore-vcs -Ht f "" "${DOTFILES_DIR}")
 
