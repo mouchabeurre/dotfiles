@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+BG="{{ .env.XDG_CACHE_HOME }}/i3lock/background.png"
+[[ -f "${BG}" ]] && i3lock -i "${BG}" || i3lock

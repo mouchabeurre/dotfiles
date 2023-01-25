@@ -1,0 +1,244 @@
+{{/* escape wal templating from go interpreter with: perl -pe 's/({{`%{{.*?}{2,})/{{`$1`}}`}}/g' this-file.tmpl */ -}}
+[colors]
+background = #be{background.strip}
+foreground = {foreground}
+
+[bar/base]
+monitor = {{ .hw.screen.monitorId }}
+local = fr-FR.UTF-8
+include-file = {{ .env.XDG_CONFIG_HOME }}/polybar/base
+
+[bar/top]
+inherit = bar/base
+modules-left = hostname sep i3 i3msg sep xwindow
+modules-center = date
+modules-right = cpu memory filesystem sep volume sep {{ ternary "bluetooth" "" .hw.hasBluetooth }} {{ ternary "wireless-network" "wired-network" .hw.net.isWifi }} vpn {{ ternary "battery" "" .hw.isLaptop }}
+
+[module/sep]
+type = custom/text
+content = " "
+content-margin-left = 1
+
+{{- if .hw.isLaptop }}
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 99
+label-charging = %percentage:0%
+label-discharging = %percentage:0%
+label-full = %percentage:0%
+format-charging = <animation-charging> <label-charging>
+format-discharging = {{`%{{F#be{color0.strip}}}`}}<ramp-capacity>{{`%{{F-}}`}} {{`%{{F{color0}}}`}}<label-discharging>{{`%{{F-}}`}}
+format-full = <ramp-capacity> <label-full>
+ramp-capacity-0 = 󰂎
+ramp-capacity-0-foreground = {color1}
+ramp-capacity-1 = 󰁺
+ramp-capacity-1-foreground = {color1}
+ramp-capacity-2 = 󰁻
+ramp-capacity-3 = 󰁼
+ramp-capacity-4 = 󰁽
+ramp-capacity-5 = 󰁾
+ramp-capacity-6 = 󰁿
+ramp-capacity-7 = 󰂀
+ramp-capacity-8 = 󰂁
+ramp-capacity-9 = 󰂂
+ramp-capacity-10 = 󰁹
+format-full-foreground = {color4}
+format-charging-foreground = {color4}
+format-full-background = #4e{color6.strip}
+format-charging-background = #4e{color6.strip}
+format-discharging-background = #4e{color6.strip}
+format-full-padding = 1
+format-charging-padding = 1
+format-discharging-padding = 1
+animation-charging-0 = 󰂆
+animation-charging-1 = 󰂇
+animation-charging-2 = 󰂈
+animation-charging-3 = 󰂉
+animation-charging-4 = 󰂊
+animation-charging-5 = 󰂋
+animation-charging-6 = 󰂅
+animation-charging-framerate = 750
+{{- end }}
+
+[module/i3]
+type = internal/i3
+strip-wsnumbers = true
+enable-scroll = false
+ws-icon-0 = 1;1
+ws-icon-1 = 2;2
+ws-icon-2 = 3;3
+ws-icon-3 = 4;4
+ws-icon-4 = 5;5
+ws-icon-5 = 6;6
+ws-icon-6 = 7;7
+ws-icon-7 = 8;8
+ws-icon-8 = 9;9
+ws-icon-default = 0
+format = <label-state>
+index-sort = true
+enable-click = true
+
+label-focused = %index%
+label-focused-foreground = {color0}
+label-focused-padding = 2
+label-focused-font = 3
+
+label-unfocused = %index%
+label-unfocused-foreground = {color8}
+label-unfocused-padding = 2
+
+label-urgent = %index%
+label-urgent-foreground = {color1}
+label-urgent-padding = 2
+
+label-visible = %index%
+label-visible-padding = 2
+format-background = #4e{color6.strip}
+
+[module/i3msg]
+type = internal/i3
+label-mode = %mode%
+label-mode-padding = 1
+label-mode-font = 4
+label-focused =
+label-unfocused =
+label-urgent =
+label-visible =
+format = <label-state><label-mode>
+format-foreground = {background}
+format-background = {color1}
+
+[module/date]
+type = internal/date
+time = %H:%M
+time-alt = %A %d.%m.%y %H:%M:%S
+label = %time%
+format = <label>
+format-padding = 1
+format-foreground = {background}
+format-background = #4e{color6.strip}
+
+{{- if .hw.net.isWifi }}
+[module/wireless-network]
+type = internal/network
+interface = {{ .hw.net.interfaceId }}
+interval = 2
+accumulate-stats = true
+label-connected = {{`%{{O-5}}`}}{{`%{{F#be{color0.strip}}}`}}󰅃{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%upspeed:9:9%{{`%{{F-}}`}} {{`%{{F#be{color0.strip}}}`}}󰅀{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%downspeed:9:9% %essid%{{`%{{F-}}`}}
+label-disconnected = 󰤮
+ramp-signal-0 = 󰤯
+ramp-signal-1 = 󰤟
+ramp-signal-2 = 󰤢
+ramp-signal-3 = 󰤥
+ramp-signal-4 = 󰤨
+format-connected = {{`%{{F#be{color0.strip}}}`}}<ramp-signal>{{`%{{F-}}`}} <label-connected>
+format-disconnected = <label-disconnected>
+format-connected-padding = 1
+format-connected-background = #4e{color6.strip}
+format-disconnected-padding = 1
+format-disconnected-background = #4e{color6.strip}
+{{- else }}
+[module/wired-network]
+type = internal/network
+interval = 1
+accumulate-stats = true
+interface = {{ .hw.net.interfaceId }}
+label-disconnected = 󰈂
+label-connected = {{`%{{O-5}}`}}{{`%{{F#be{color0.strip}}}`}}󰅃{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%upspeed:9:9%{{`%{{F-}}`}} {{`%{{F#be{color0.strip}}}`}}󰅀{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%downspeed:9:9%{{`%{{F-}}`}}
+format-connected = {{`%{{F#be{color0.strip}}}`}}󰈁{{`%{{F-}}`}} <label-connected>
+format-disconnected = <label-disconnected>
+format-connected-padding = 1
+format-connected-background = #4e{color6.strip}
+format-disconnected-padding = 1
+format-disconnected-background = #4e{color6.strip}
+; label-disconnected = 󰈂
+{{- end }}
+
+[module/vpn]
+type = custom/script
+exec = {{ .env.XDG_CONFIG_HOME }}/polybar/scripts/vpn "󰌆" "󰌊" "󱘖" "{color0}" "#be{color0.strip}" "{color1}"
+interval = {{ ternary "3" "5" .hw.isLaptop }}
+label = %output%
+format = <label>
+format-padding = 1
+format-background = #4e{color6.strip}
+
+[module/hostname]
+type = custom/script
+; exec = uname -n
+exec = {{ .env.XDG_CONFIG_HOME }}/polybar/scripts/hostname
+interval = 240
+label = %output%
+label-font = 4
+format = <label>
+format-padding = 1
+format-foreground = {color1}
+
+{{- if .hw.hasBluetooth }}
+[module/bluetooth]
+type = custom/script
+exec = {{ .env.XDG_CONFIG_HOME }}/polybar/scripts/bluetooth "󰂯" "󰂲" "#be{color0.strip}" "{color1}"
+interval = 5
+label = %output%
+format = <label>
+format-padding = 1
+format-background = #4e{color6.strip}
+{{- end }}
+
+[module/volume]
+type = internal/pulseaudio
+label-volume = %percentage%
+label-muted = 󰖁
+ramp-volume-0 = 󰕿
+ramp-volume-1 = 󰖀
+ramp-volume-2 = 󰕾
+label-volume-foreground = {color0}
+label-muted-foreground = {color0}
+format-volume = {{`%{{F#be{color0.strip}}}`}}<ramp-volume>{{`%{{F-}}`}} <label-volume>
+format-muted = <label-muted>
+format-volume-padding = 1
+format-muted-padding = 1
+format-volume-background = #4e{color6.strip}
+format-muted-background = #4e{color6.strip}
+
+[module/xwindow]
+type = internal/xwindow
+format = <label>
+label = %title:0:70: 󰑀%
+label-padding = 1
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+label = {{`%{{F#be{color0.strip}}}`}}󰍛{{`%{{F-}}`}} {{`%{{F{color0}}}`}}%percentage:2%{{`%{{F-}}`}}
+format-padding = 1
+format-background = #4e{color6.strip}
+
+[module/memory]
+type = internal/memory
+interval = 3
+label = {{`%{{F#be{color0.strip}}}`}}󰆼{{`%{{F-}}`}} {{`%{{F{color0}}}`}}%percentage_used:2%{{`%{{F-}}`}}
+format-padding = 1
+format-background = #4e{color6.strip}
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+spacing = 0
+mount-0 = /
+{{- if .hw.isLaptop }}
+mount-1 = /home
+mount-2 = /var
+{{- else if eq .chezmoi.hostname "decanarch" }}
+mount-1 = /storage
+{{- end }}
+label-mounted = %mountpoint%:%percentage_used%
+label-unmounted =
+format-mounted = {{`%{{F#be{color0.strip}}}`}}󰮌{{`%{{F-}}`}} {{`%{{F{color0}}}`}}<label-mounted>{{`%{{F-}}`}}
+#format-mounted = 󰮌 <label-mounted>
+format-mounted-padding = 1
+format-mounted-background = #4e{color6.strip}
+
+; vim:ft=dosini

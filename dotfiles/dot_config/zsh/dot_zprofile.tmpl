@@ -1,0 +1,5 @@
+{{- range $key, $value := .env }}
+export {{ list $key (quote $value) | join "=" -}}
+{{ end }}
+path+=({{- cat .env.MYSCRIPTS (joinPath .env.CARGO_HOME "bin") (joinPath .env.GOPATH "bin") }})
+export PATH

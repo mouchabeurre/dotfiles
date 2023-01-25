@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+I1="${1}"
+I2="${2}"
+C1="${3}"
+C2="${4}"
+BT_STATUS="$(systemctl is-active bluetooth.service)"
+if [[ ${BT_STATUS} == "active" ]]; then
+  echo "%{F$C2}$I1%{F-}"
+else
+  echo "%{F$C1}$I2%{F-}"
+fi

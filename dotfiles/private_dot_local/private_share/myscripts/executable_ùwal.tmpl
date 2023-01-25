@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+PROGRAM="mywal"
+WALL="${1}"
+if [[ -z "${WALL}" ]]; then
+  PICTURES_DIR="$(xdg-user-dir PICTURES)"
+  echo "[?] Select wallpaper:"
+  WALL="$(fd -a -d 1 -t f "" ${PICTURES_DIR}/Wallpapers ${PICTURES_DIR}/inspiration | fzf)"
+fi
+[[ -z "${WALL}" ]] && exit 0
+echo "> ${WALL}"
+BACKENDS="wal"
+for BACKEND in schemer2 haishoku colorthief colorz; do
+  if command -v ${BACKEND} &> /dev/null; then
+    BACKENDS="${BACKENDS}\n${BACKEND}"
+  fi
+done
+[[ -z "${BACKENDS}" ]] && echo "[!] No color backend in PATH, exiting" && exit 1
+echo "[?] Choose backend:"
+BACKEND="$(printf ${BACKENDS} | fzf)"
+[[ -z "${BACKEND}" ]] && exit 0
+echo "> ${BACKEND}"
+POST_SCRIPT="{{ .env.XDG_CONFIG_HOME }}/wal/post_wal"
+if [[ -f "${POST_SCRIPT}" ]]; then
+  wal --backend "${BACKEND}" -i "${WALL}" -o "${POST_SCRIPT}"
+  PID="$(pgrep -fa ${POST_SCRIPT} | awk '{print $1}')"
+  while [[ -e /proc/${PID} ]]; do
+    sleep .5
+  done
+  notify-send "${PROGRAM}" "Post-processing done executing"
+else
+  wal --backend "${BACKEND}" -i "${WALL}"
+fi
+

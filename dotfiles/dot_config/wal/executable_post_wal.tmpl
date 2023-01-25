@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+PROGRAM="POST wallpaper change"
+SCRIPTS_DIR="{{ .env.XDG_CONFIG_HOME }}/wal/scripts"
+while read -r SCRIPT; do
+  BASENAME="$(basename "${SCRIPT}")"
+  NAME="$(perl -pe 's/^\d{2}-(.*)$/$1/' <<<"${BASENAME}")"
+  if "${SCRIPT}"; then
+    notify-send -u low "${PROGRAM}" "Script [${NAME}] successfully executed"
+  else
+    notify-send -u critical "${PROGRAM}" "Script [${NAME}] exited with an error"
+  fi
+done < <(fd -a -L -tf -tx "^\d{2}.*" "${SCRIPTS_DIR}" | sort -V)

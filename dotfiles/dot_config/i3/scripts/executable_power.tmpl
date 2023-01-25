@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+OPTIONS="Suspend\nExit\nShut down\nReboot{{- ternary "" `\nHibernate` .hw.isLaptop -}}"
+CHOICE="$(printf "${OPTIONS}" \
+  | rofi \
+    -dmenu \
+    -i \
+    -p "Power" \
+    -theme-str 'mainbox { margin: 430px 800px; } element-icon { enabled: false; }')"
+clear_clips() {
+  clipdel -d ".*"
+}
+case "${CHOICE}" in
+  "Suspend")
+    "{{ .env.XDG_CONFIG_HOME }}/i3/scripts/lock" && clear_clips && systemctl suspend
+    ;;
+  "Exit")
+    clear_clips && i3-msg exit
+    ;;
+  "Shut down")
+    clear_clips && systemctl poweroff
+    ;;
+  "Reboot")
+    clear_clips && systemctl reboot
+    ;;
+{{- if not .hw.isLaptop }}
+  "Hibernate")
+    "{{ .env.XDG_CONFIG_HOME }}/i3/scripts/lock"  && clear_clips && systemctl hibernate
+    ;;
+{{- end }}
+  *)
+    exit 0
+    ;;
+esac

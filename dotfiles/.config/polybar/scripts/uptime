@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-UPTIME="$(uptime | awk '{
-  if (index($3, ",") != 0) {
-    print substr($3, 1, length($3) - 1)
-  } else {
-    print $3" "substr($4, 1, length($4) - 1)
-  }
-}')"
-echo "%{O7}${UPTIME}"

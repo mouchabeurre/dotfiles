@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-mkdir -p "${XDG_CONFIG_HOME}/dunst"
-ln -s "${XDG_CACHE_HOME}/wal/dunstrc" "${XDG_CONFIG_HOME}/dunst/dunstrc"
-killall dunst || exit 1

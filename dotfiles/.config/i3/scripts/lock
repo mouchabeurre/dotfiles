@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-BG="$HOME/.cache/i3lock/background.png"
-if [[ -f "$BG" ]]; then
-  i3lock -i "$BG"
-else
-  i3lock
-fi

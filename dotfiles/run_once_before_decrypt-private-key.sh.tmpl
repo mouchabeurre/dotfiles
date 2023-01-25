@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+echo "[#] Decrypting key needed:"
+KEY="{{ .chezmoi.cacheDir }}/key.txt"
+if [[ ! -f "${KEY}" ]]; then
+  mkdir -p "{{ .chezmoi.cacheDir }}"
+  age --decrypt --output "${KEY}" "{{ .chezmoi.workingTree }}/key.txt.age"
+  chmod 600 "${KEY}"
+fi

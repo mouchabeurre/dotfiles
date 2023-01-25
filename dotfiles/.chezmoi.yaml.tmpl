@@ -1,0 +1,45 @@
+{{- /* Prompted data */ -}}
+{{- $isLaptop := promptBoolOnce . "hw.isLaptop" "Device is a laptop" -}}
+{{- $monitorId := promptStringOnce . "hw.screen.monitorId" "Main monitor ID (xrandr)" -}}
+{{- $netInterface := promptStringOnce . "hw.net.interfaceId" "Main network interface ID" -}}
+{{- $isNetInterfaceWireless := promptBoolOnce . "hw.net.isWifi" "Is it a wireless interface" -}}
+{{- $hasBluetooth := promptBoolOnce . "hw.hasBluetooth" "Device has bluetooth" -}}
+{{- /* Environment data */ -}}
+{{- $envDict := dict }}
+{{- /*   Default directories */ -}}
+{{- $_ := set $envDict "XDG_CONFIG_HOME" (joinPath .chezmoi.homeDir ".config") }}
+{{- $_ := set $envDict "XDG_CACHE_HOME" (joinPath .chezmoi.homeDir ".cache") }}
+{{- $_ := set $envDict "XDG_DATA_HOME" (joinPath .chezmoi.homeDir ".local/share") }}
+{{- $_ := set $envDict "MYBIN" (joinPath (get $envDict "XDG_DATA_HOME") "mybins") }}
+{{- $_ := set $envDict "MYSCRIPTS" (joinPath (get $envDict "XDG_DATA_HOME") "myscripts") }}
+{{- $_ := set $envDict "GOPATH" (joinPath (get $envDict "MYBIN") "go") }}
+{{- $_ := set $envDict "CARGO_HOME" (joinPath (get $envDict "MYBIN") "cargo") }}
+{{- $_ := set $envDict "GNUPGHOME" (joinPath .chezmoi.homeDir ".gnupg") }}
+{{- /*   Usefull application variables */ -}}
+{{- $_ := set $envDict "LESSHISTFILE" (joinPath (get $envDict "XDG_CONFIG_HOME") "less" "lesshst") }}
+{{- $_ := set $envDict "EDITOR" "nvim" }}
+{{- $_ := set $envDict "GIT_EDITOR" (get $envDict "EDITOR") }}
+{{- $_ := set $envDict "FZF_DEFAULT_OPTS" "--height 40% --reverse --no-bold" }}
+{{- $_ := set $envDict "SKIM_DEFAULT_OPTTIONS" "--height=40% --reverse" }}
+{{- $_ := set $envDict "CM_LAUNCHER" "rofi" }}
+{{- $_ := set $envDict "ASDF_CONFIG_FILE" (joinPath (get $envDict "XDG_CONFIG_HOME") "asdf" "asdfrc") }}
+{{- $_ := set $envDict "ASDF_DATA_DIR" (joinPath (get $envDict "MYBIN") "asdf") }}
+{{- $_ := set $envDict "DOTNET_CLI_TELEMETRY_OPTOUT" "1" }}
+data:
+  hw:
+    isLaptop: {{ $isLaptop }}
+    screen:
+      monitorId: {{ $monitorId }}
+    net:
+      interfaceId: {{ $netInterface }}
+      isWifi: {{ $isNetInterfaceWireless }}
+    hasBluetooth: {{ $hasBluetooth }}
+  env:
+{{- range $key, $value := $envDict }}
+    {{ list $key (quote $value) | join ": " -}}
+{{ end }}
+
+encryption: age
+age:
+  identity: {{ .chezmoi.cacheDir }}/key.txt
+  recipient: age15fdh5yx6vcnzm4vetzd56j5z3xm0xshq080j0evg6etrcs9vnf6q5gw456

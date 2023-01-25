@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+[[ -f {{ .env.XDG_CACHE_HOME }}/wal/colors.sh ]] && source {{ .env.XDG_CACHE_HOME }}/wal/colors.sh
+BG="${background:-"black"}"
+CLIP="$(xclip -selection clipboard -o)"
+STRING="${1:-$CLIP}"
+[[ -z "${STRING}" ]] && exit 0
+echo "${STRING}"
+qrencode -t UTF8 -o - "${STRING}"
+# qrencode -o - "${STRING}" | feh - --info "echo ${STRING}" -B "${BG}" --draw-tinted
