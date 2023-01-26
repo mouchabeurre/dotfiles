@@ -25,6 +25,7 @@
 {{- $_ := set $envDict "ASDF_CONFIG_FILE" (joinPath (get $envDict "XDG_CONFIG_HOME") "asdf" "asdfrc") }}
 {{- $_ := set $envDict "ASDF_DATA_DIR" (joinPath (get $envDict "MYBIN") "asdf") }}
 {{- $_ := set $envDict "DOTNET_CLI_TELEMETRY_OPTOUT" "1" }}
+{{- $_ := set $envDict "HOARD_NOBIND" "1" }}
 data:
   hw:
     isLaptop: {{ $isLaptop }}
