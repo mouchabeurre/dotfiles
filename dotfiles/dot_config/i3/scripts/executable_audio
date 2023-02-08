@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+COMMAND="${1}"
+case "${COMMAND}" in
+  "toggle")
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    ;;
+  "set")
+    NEW=${2}
+    NEW=$((NEW <= 100 ? NEW : 100))
+    NEW=$((NEW >= 0 ? NEW : 0))
+    pactl set-sink-volume @DEFAULT_SINK@ ${NEW}%
+    ;;
+  "up")
+    STEP=${2}
+    CURRENT_VOLUME=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | perl -ne '/(\d{1,3})/ && print $1')
+    if [[ ${CURRENT_VOLUME} -le 100 ]]; then
+      NEW=$((CURRENT_VOLUME + STEP))
+      NEW=$((NEW <= 100 ? NEW : 100))
+      pactl set-sink-volume @DEFAULT_SINK@ ${NEW}%
+    fi
+    ;;
+  "down")
+    STEP=${2}
+    CURRENT_VOLUME=$(pactl get-sink-volume @DEFAULT_SINK@ | awk '{print $5}' | perl -ne '/(\d{1,3})/ && print $1')
+    if [[ ${CURRENT_VOLUME} -ge 0 ]]; then
+      NEW=$((CURRENT_VOLUME - STEP))
+      NEW=$((NEW >= 0 ? NEW : 0))
+      pactl set-sink-volume @DEFAULT_SINK@ ${NEW}%
+    fi
+    ;;
+  *)
+    exit 0
+    ;;
+esac
