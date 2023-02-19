@@ -5,7 +5,7 @@ ctrl_c() {
   exit 130
 }
 
-HOARD_HOME="{{ .env.XDG_CONFIG_HOME }}/hoard"
+HOARD_HOME="${XDG_CONFIG_HOME}/hoard"
 TROVE_FILE="${HOARD_HOME}/trove.yml"
 CONFIG_FILE="${HOARD_HOME}/config.yml"
 TOKEN_START="$(yq -r '.parameter_token' "${CONFIG_FILE}")"
