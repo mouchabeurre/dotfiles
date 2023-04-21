@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 mkdir -p "{{ .env.XDG_CONFIG_HOME }}/dunst"
-ln -s "{{ .env.XDG_CACHE_HOME }}/wal/dunstrc" "{{ .env.XDG_CONFIG_HOME }}/dunst/dunstrc"
+if [[ ! -L "{{ .env.XDG_CONFIG_HOME }}/dunst/dunstrc" ]]; then
+	ln -sf "{{ .env.XDG_CACHE_HOME }}/wal/dunstrc" "{{ .env.XDG_CONFIG_HOME }}/dunst/dunstrc"
+fi
 killall dunst || exit 1

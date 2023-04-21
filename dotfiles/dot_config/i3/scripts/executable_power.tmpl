@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-OPTIONS="Suspend\nExit\nShut down\nReboot{{- ternary "" `\nHibernate` .hw.isLaptop -}}"
+OPTIONS="Suspend\nExit\nShut down\nReboot"
 CHOICE="$(printf "${OPTIONS}" \
   | rofi \
     -dmenu \
@@ -22,11 +22,6 @@ case "${CHOICE}" in
   "Reboot")
     clear_clips && systemctl reboot
     ;;
-{{- if not .hw.isLaptop }}
-  "Hibernate")
-    "{{ .env.XDG_CONFIG_HOME }}/i3/scripts/lock"  && clear_clips && systemctl hibernate
-    ;;
-{{- end }}
   *)
     exit 0
     ;;

@@ -232,7 +232,8 @@ mount-0 = /
 mount-1 = /home
 mount-2 = /var
 {{- else if eq .chezmoi.hostname "decanarch" }}
-mount-1 = /storage
+mount-1 = /fstorage
+mount-2 = /storage
 {{- end }}
 label-mounted = %mountpoint%:%percentage_used%
 label-unmounted =

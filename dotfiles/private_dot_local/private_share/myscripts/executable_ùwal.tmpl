@@ -23,6 +23,7 @@ POST_SCRIPT="{{ .env.XDG_CONFIG_HOME }}/wal/post_wal"
 if [[ -f "${POST_SCRIPT}" ]]; then
   wal --backend "${BACKEND}" -i "${WALL}" -o "${POST_SCRIPT}"
   PID="$(pgrep -fa ${POST_SCRIPT} | awk '{print $1}')"
+  sleep 1
   while [[ -e /proc/${PID} ]]; do
     sleep .5
   done
