@@ -8,10 +8,10 @@ padding-left = 0
 padding-right = 0
 module-margin-left = 0
 module-margin-right = 0
-font-0 = Hack:size=10.5:weight=regular;2
+font-0 = Jetbrains Mono:size=10.5:weight=regular;2
 font-1 = Material Design Icons:size=11;2
-font-2 = Hack:size=10.5:weight=bold;2
-font-3 = Hack:size=10.5:weight=regular:style=italic;2
+font-2 = Jetbrains Mono:size=10.5:weight=bold;2
+font-3 = Jetbrains Mono:size=10.5:weight=regular:style=italic;2
 cursor-click = pointer
 
 ; vim:ft=dosini

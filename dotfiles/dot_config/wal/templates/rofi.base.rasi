@@ -30,7 +30,7 @@
 }}
 
 window {{
-    font: "Hack 10";
+    font: "Jetbrains Mono 10";
     fullscreen: true;
     background-color: @background;
 }}
@@ -68,7 +68,7 @@ entry {{
 prompt {{
     spacing: 0;
     text-color: @normal-foreground;
-    font: "Hack Bold 10";
+    font: "Jetbrains Mono Bold 10";
 }}
 textbox-prompt-colon {{
     expand: false;
@@ -90,7 +90,7 @@ element {{
     children: [element-index, element-icon, element-text];
 }}
 element-index {{
-    font: "Hack Bold 9";
+    font: "Jetbrains Mono Bold 9";
     vertical-align: 0.5;
     text-color: @normal-foreground;
 }}
@@ -152,7 +152,7 @@ mode-switcher {{
 button {{
     vertical-align: 0.5;
     horizontal-align: 0.5;
-    font: "Hack Bold 10";
+    font: "Jetbrains Mono Bold 10";
     padding: 2px;
     border: 1px;
     border-color: @mode-button-color;

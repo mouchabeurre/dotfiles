@@ -28,14 +28,14 @@ icon-node-{@index} \{
 textbox-class-node-{@index} \{
     expand: false;
     str: "{node.class}:";
-    font: "Hack Bold 10";
+    font: "Jetbrains Mono Bold 10";
     vertical-align: 0.5;
     text-color: @normal-foreground;
 }
 textbox-label-node-{@index} \{
     expand: false;
     str: "{node.title}";
-    font: "Hack 10";
+    font: "Jetbrains Mono 10";
     vertical-align: 0.5;
     text-color: @normal-foreground;
 }
