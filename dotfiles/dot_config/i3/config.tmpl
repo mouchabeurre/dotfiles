@@ -72,10 +72,10 @@ bindsym $mod+F1 nop scratchterm
 bindsym $mod+Shift+a exec --no-startup-id i3-window-killer -c {{ .env.XDG_CACHE_HOME }}/wal/rofi.kill.rasi -t {{ .env.XDG_CONFIG_HOME }}/rofi/kill.template.rasi -o $outer_gap -s 1
 
 # Clipboard manager
-bindsym $mod+m exec --no-startup-id clipmenu
+bindsym $mod+m exec --no-startup-id "clipmenu -dmenu -i -p \\"Clipboard entry\\" -theme-str \\"element-icon { enabled: false; }\\""
 
 # Clear saved clips
-bindsym $mod+Shift+m exec --no-startup-id clipdel -d ".*" && notify-send -u low "Clipboard Manager" "Cleared clip history"
+bindsym $mod+Shift+m exec --no-startup-id "clipdel -d \\".*\\" && notify-send -u low \\"Clipboard Manager\\" \\"Cleared clip history\\""
 
 # Start rofi
 bindsym $mod+d exec --no-startup-id rofi -modi drun#window -show drun {{ .env.XDG_CACHE_HOME }}/wal/rofi.base.rasi
@@ -275,6 +275,8 @@ exec --no-startup-id xset r rate 200 30
 # Compton
 exec --no-startup-id picom
 # Drop-down terminal
-exec_always --no-startup-id kitti3 -n scratchterm -p CC -s 0.85 0.85
+{{- $scratchRatioH := 0.85 }}
+{{- $scratchRatioW := (divf (subf .hw.screen.monitorWidth (mulf .hw.screen.monitorHeight (subf 1 $scratchRatioH))) .hw.screen.monitorWidth) }}
+exec_always --no-startup-id kitti3 -n scratchterm -p CC -s {{ $scratchRatioW }} {{ $scratchRatioH }}
 # Notification demon
 exec --no-startup-id dunst -config {{ .env.XDG_CACHE_HOME }}/wal/dunstrc

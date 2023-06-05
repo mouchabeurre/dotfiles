@@ -1,6 +1,8 @@
 {{- /* Prompted data */ -}}
 {{- $isLaptop := promptBoolOnce . "hw.isLaptop" "Device is a laptop" -}}
 {{- $monitorId := promptStringOnce . "hw.screen.monitorId" "Main monitor ID (xrandr)" -}}
+{{- $monitorWidth := promptIntOnce . "hw.screen.monitorWidth" "Main monitor width in pixels (xrandr)" -}}
+{{- $monitorHeight := promptIntOnce . "hw.screen.monitorHeight" "Main monitor height in pixels (xrandr)" -}}
 {{- $netInterface := promptStringOnce . "hw.net.interfaceId" "Main network interface ID" -}}
 {{- $isNetInterfaceWireless := promptBoolOnce . "hw.net.isWifi" "Is it a wireless interface" -}}
 {{- $hasBluetooth := promptBoolOnce . "hw.hasBluetooth" "Device has bluetooth" -}}
@@ -31,6 +33,8 @@ data:
     isLaptop: {{ $isLaptop }}
     screen:
       monitorId: {{ $monitorId }}
+      monitorWidth: {{ $monitorWidth }}
+      monitorHeight: {{ $monitorHeight }}
     net:
       interfaceId: {{ $netInterface }}
       isWifi: {{ $isNetInterfaceWireless }}
