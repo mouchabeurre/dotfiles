@@ -126,7 +126,7 @@ type = internal/network
 interface = {{ .hw.net.interfaceId }}
 interval = 2
 accumulate-stats = true
-label-connected = {{`%{{O-5}}`}}{{`%{{F#be{color0.strip}}}`}}󰅃{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%upspeed:9:9%{{`%{{F-}}`}} {{`%{{F#be{color0.strip}}}`}}󰅀{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%downspeed:9:9% %essid%{{`%{{F-}}`}}
+label-connected = {{`%{{O-5}}`}}{{`%{{F#be{color0.strip}}}`}}󰅃{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%upspeed:9:9%{{`%{{F-}}`}} {{`%{{F#be{color0.strip}}}`}}󰅀{{`%{{F-}}`}}{{`%{{F{color0}}}`}}%downspeed:9:9% %essid:0:12:󰑀%{{`%{{F-}}`}}
 label-disconnected = 󰤮
 ramp-signal-0 = 󰤯
 ramp-signal-1 = 󰤟
@@ -140,7 +140,6 @@ format-connected-background = #4e{color6.strip}
 format-disconnected-padding = 1
 format-disconnected-foreground = {color1}
 format-disconnected-background = #4e{color6.strip}
-format-disconnected-foreground = {color1}
 {{- else }}
 [module/wired-network]
 type = internal/network
@@ -210,7 +209,7 @@ format-muted-background = #4e{color6.strip}
 [module/xwindow]
 type = internal/xwindow
 format = <label>
-label = %title:0:70: 󰑀%
+label = %title:0:70:󰑀%
 label-padding = 1
 
 [module/cpu]
